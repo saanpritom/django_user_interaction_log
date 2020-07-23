@@ -10,18 +10,23 @@ class ModuleConfigurations:
 
     default_allow_sensitive_test_case = False   # check self.allow_sensitive_test_cases() method
 
-    def allow_sensitive_test_cases(self):
+    def allow_sensitive_test_cases(self, on_test=False):
         """The default value is FALSE. If it is TRUE then it will run some model based TestCases which may not be
-           suitable for your application. If it throws any error then just make it FALSE"""
-        if hasattr(settings, 'EVENT_LOGGER_SETTINGS'):
-            if 'sensitive_test_cases' in settings.EVENT_LOGGER_SETTINGS:
-                if settings.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is True:
-                    return True
-                elif settings.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is False:
-                    return False
+           suitable for your application. If it throws any error then just make it FALSE. The second argument
+           on_test is used for various TestCases to run. Genrally it is False so the original data will run if
+           it is True then only the sent fake data will run"""
+        if on_test is False:
+            if hasattr(settings, 'EVENT_LOGGER_SETTINGS'):
+                if 'sensitive_test_cases' in settings.EVENT_LOGGER_SETTINGS:
+                    if settings.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is True:
+                        return True
+                    elif settings.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is False:
+                        return False
+                    else:
+                        raise ValidationError('sensitive_test_cases value is expected a Boolean value')
                 else:
-                    raise ValidationError('sensitive_test_cases value is expected a Boolean value')
+                    return self.default_allow_sensitive_test_case
             else:
                 return self.default_allow_sensitive_test_case
         else:
-            return self.default_allow_sensitive_test_case
+            pass
