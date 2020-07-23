@@ -33,11 +33,9 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.targeted_instance_id, '0')
         self.assertEqual(test_object.event_path, 'n/a')
         self.assertEqual(test_object.get_anonymous_object(test_object.actor_id,
-                                                          test_object.__class__._meta.get_field('actor_id').default),
-                                                          'Anonymous')
+                                                          test_object.__class__._meta.get_field('actor_id').default), 'Anonymous')
         self.assertEqual(test_object.get_anonymous_object(test_object.targeted_instance_id,
-                                                          test_object.__class__._meta.get_field('targeted_instance_id').default),
-                                                          'Anonymous')
+                                                          test_object.__class__._meta.get_field('targeted_instance_id').default), 'Anonymous')
         self.assertEqual(test_object.get_full_message(),
                          'Anonymous performed %s on Anonymous at %s at %s' % (test_object.log_detail, test_object.event_path,
                                                                               test_object.created_at.strftime("%m/%d/%Y, %H:%M:%S")))
@@ -50,11 +48,9 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.targeted_instance_id, '10')
         self.assertEqual(test_object.event_path, '/views/detail/1/')
         self.assertEqual(test_object.get_anonymous_object(test_object.actor_id,
-                                                          test_object.__class__._meta.get_field('actor_id').default),
-                                                          test_object.actor_id)
+                                                          test_object.__class__._meta.get_field('actor_id').default), test_object.actor_id)
         self.assertEqual(test_object.get_anonymous_object(test_object.targeted_instance_id,
-                                                          test_object.__class__._meta.get_field('targeted_instance_id').default),
-                                                          test_object.targeted_instance_id)
+                                                          test_object.__class__._meta.get_field('targeted_instance_id').default), test_object.targeted_instance_id)
         self.assertEqual(test_object.get_full_message(),
                          '%s performed %s on %s at %s at %s' % (test_object.actor_id, test_object.log_detail,
                                                                 test_object.targeted_instance_id, test_object.event_path,
@@ -68,11 +64,9 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.targeted_instance_id, str(self.uuid_default_id))
         self.assertEqual(test_object.event_path, '/views/%s/' % str(self.uuid_default_id))
         self.assertEqual(test_object.get_anonymous_object(test_object.actor_id,
-                                                          test_object.__class__._meta.get_field('actor_id').default),
-                                                          test_object.actor_id)
+                                                          test_object.__class__._meta.get_field('actor_id').default), test_object.actor_id)
         self.assertEqual(test_object.get_anonymous_object(test_object.targeted_instance_id,
-                                                          test_object.__class__._meta.get_field('targeted_instance_id').default),
-                                                          test_object.targeted_instance_id)
+                                                          test_object.__class__._meta.get_field('targeted_instance_id').default), test_object.targeted_instance_id)
         self.assertEqual(test_object.get_full_message(),
                          '%s performed %s on %s at %s at %s' % (test_object.actor_id, test_object.log_detail,
                                                                 test_object.targeted_instance_id, test_object.event_path,
