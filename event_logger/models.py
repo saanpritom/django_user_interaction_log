@@ -15,10 +15,32 @@ class LogRecordsModel(models.Model):
     event_path = models.TextField(null=True, blank=True, verbose_name='Event Path', default='n/a')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
 
-    def __str__(self):
-        return self.actor_id
-
     class Meta:
         verbose_name = 'Log Record'
         verbose_name_plural = 'Log Records'
         ordering = ['-created_at']
+
+    def __str__(self):
+        return self.actor_id
+
+    def get_anonymous_object(self, current_value, default_value):
+        """This classmethod takes two arguments current_value and default_value and check if those matched.
+           If matched then return 'Anonymous' as object text"""
+        if current_value == default_value:
+            return 'Anonymous'
+        else:
+            return current_value
+
+    def get_full_message(self):
+        """This classmethod constacts a full action message for quicker usage. It first checks if the _id marked
+           fields values are in default stage. If default value found then the value is changed to Anonymous
+           to the message. Returns a string representation of a LogRecordsModel instance.
+           The structure of the string is:
+           {actor_id} + ' performed ' + {log_detail} + ' on ' + {targeted_instance_id} + ' at ' + {event_path} +
+           ' at ' + {created_at}"""
+        message = ''
+        message = str(self.get_anonymous_object(self.actor_id, self.__class__._meta.get_field('actor_id').default))
+        message = message + ' performed ' + str(self.log_detail) + ' on '
+        message = message + str(self.get_anonymous_object(self.targeted_instance_id, self.__class__._meta.get_field('targeted_instance_id').default))
+        message = message + ' at ' + str(self.event_path) + ' at ' + str(self.created_at.strftime("%m/%d/%Y, %H:%M:%S"))
+        return message
