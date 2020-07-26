@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from ..models import LogRecordsModel
 import uuid
@@ -13,14 +14,10 @@ class LogRecordsModelTestCase(TestCase):
 
     def setUp(self):
         """Setting up some fake datas depends on various scenarios"""
+        test_user_one = get_user_model().objects.create(username='test_user_one', email='test_user_one@example.com', password='superacces123one')
+        test_user_two = get_user_model().objects.create(username='test_user_two', email='test_user_two@example.com', password='superacces123two')
         self.model.objects.create()
-        self.model.objects.create(actor_id='25', log_detail='Test Log', targeted_instance_id='10',
-                                  event_path='/views/detail/1/')
-
-        """Lets create an object where actor_id is uuid.uuid4() types"""
-        self.model.objects.create(actor_id=self.uuid_default_id, log_detail='A UUID test log',
-                                  targeted_instance_id=self.uuid_default_id,
-                                  event_path='/views/%s/' % str(self.uuid_default_id))
+        self.model.objects.create(log_user=test_user_one, log_detail='read operation', log_target=test_user_two, event_path='/test/user/path/')
 
     def get_test_object(self, id):
         return get_object_or_404(self.model, pk=id)
@@ -28,46 +25,29 @@ class LogRecordsModelTestCase(TestCase):
     def test_log_records_default_data(self):
         """Testing if database default data are working properly"""
         test_object = self.get_test_object(1)
-        self.assertEqual(test_object.actor_id, '0')
-        self.assertEqual(test_object.log_detail, 'n/a')
-        self.assertEqual(test_object.targeted_instance_id, '0')
+        self.assertEqual(test_object.id, 1)
+        self.assertEqual(test_object.user_content_type, None)
+        self.assertEqual(test_object.user_object_id, 'Anonymous')
+        self.assertEqual(test_object.log_user, None)
+        self.assertEqual(test_object.log_detail, 'no specified operation')
+        self.assertEqual(test_object.target_content_type, None)
+        self.assertEqual(test_object.target_object_id, None)
+        self.assertEqual(test_object.log_target, None)
         self.assertEqual(test_object.event_path, 'n/a')
-        self.assertEqual(test_object.get_anonymous_object(test_object.actor_id,
-                                                          test_object.__class__._meta.get_field('actor_id').default), 'Anonymous')
-        self.assertEqual(test_object.get_anonymous_object(test_object.targeted_instance_id,
-                                                          test_object.__class__._meta.get_field('targeted_instance_id').default), 'Anonymous')
-        self.assertEqual(test_object.get_full_message(),
-                         'Anonymous performed %s on Anonymous at %s at %s' % (test_object.log_detail, test_object.event_path,
-                                                                              test_object.created_at.strftime("%m/%d/%Y, %H:%M:%S")))
+        self.assertEqual(str(test_object), '1. Anonymous performed no specified operation on None at n/a ' + str(test_object.get_timesince()) + ' ago')
+        self.assertEqual(test_object.get_user_representer(), test_object.__class__._meta.get_field('user_object_id').default)
 
-    def test_log_records_inserted_data(self):
+    def test_log_records_dummy_data_one(self):
         """Testing if database inserted data are working properly"""
         test_object = self.get_test_object(2)
-        self.assertEqual(test_object.actor_id, '25')
-        self.assertEqual(test_object.log_detail, 'Test Log')
-        self.assertEqual(test_object.targeted_instance_id, '10')
-        self.assertEqual(test_object.event_path, '/views/detail/1/')
-        self.assertEqual(test_object.get_anonymous_object(test_object.actor_id,
-                                                          test_object.__class__._meta.get_field('actor_id').default), test_object.actor_id)
-        self.assertEqual(test_object.get_anonymous_object(test_object.targeted_instance_id,
-                                                          test_object.__class__._meta.get_field('targeted_instance_id').default), test_object.targeted_instance_id)
-        self.assertEqual(test_object.get_full_message(),
-                         '%s performed %s on %s at %s at %s' % (test_object.actor_id, test_object.log_detail,
-                                                                test_object.targeted_instance_id, test_object.event_path,
-                                                                test_object.created_at.strftime("%m/%d/%Y, %H:%M:%S")))
-
-    def test_log_records_uuid_inserted_data(self):
-        """Testing if database using uuid.uuid4() as the ID number"""
-        test_object = self.get_test_object(3)
-        self.assertEqual(test_object.actor_id, str(self.uuid_default_id))
-        self.assertEqual(test_object.log_detail, 'A UUID test log')
-        self.assertEqual(test_object.targeted_instance_id, str(self.uuid_default_id))
-        self.assertEqual(test_object.event_path, '/views/%s/' % str(self.uuid_default_id))
-        self.assertEqual(test_object.get_anonymous_object(test_object.actor_id,
-                                                          test_object.__class__._meta.get_field('actor_id').default), test_object.actor_id)
-        self.assertEqual(test_object.get_anonymous_object(test_object.targeted_instance_id,
-                                                          test_object.__class__._meta.get_field('targeted_instance_id').default), test_object.targeted_instance_id)
-        self.assertEqual(test_object.get_full_message(),
-                         '%s performed %s on %s at %s at %s' % (test_object.actor_id, test_object.log_detail,
-                                                                test_object.targeted_instance_id, test_object.event_path,
-                                                                test_object.created_at.strftime("%m/%d/%Y, %H:%M:%S")))
+        self.assertEqual(test_object.id, 2)
+        self.assertNotEqual(test_object.user_content_type, None)
+        self.assertEqual(test_object.user_object_id, str(get_user_model().objects.get(username='test_user_one').id))
+        self.assertEqual(test_object.log_user, get_user_model().objects.get(username='test_user_one'))
+        self.assertEqual(test_object.log_detail, 'read operation')
+        self.assertNotEqual(test_object.target_content_type, None)
+        self.assertEqual(test_object.target_object_id, str(get_user_model().objects.get(username='test_user_two').id))
+        self.assertEqual(test_object.log_target, get_user_model().objects.get(username='test_user_two'))
+        self.assertEqual(test_object.event_path, '/test/user/path/')
+        self.assertEqual(str(test_object), '2. test_user_one performed read operation on test_user_two at /test/user/path/ ' + str(test_object.get_timesince()) + ' ago')
+        self.assertEqual(test_object.get_user_representer(), 'test_user_one')
