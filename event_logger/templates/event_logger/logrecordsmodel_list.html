@@ -10,9 +10,9 @@
           <thead>
             <tr>
               <th>Sl.</td>
-              {% for fields in object_list.0|model_object_fields_list %}
-                {% if fields|is_field_printable %}
-                    <th>{{ fields.verbose_name }}</th>
+              {% for field in object_list.0|model_object_fields_list %}
+                {% if field|is_field_printable %}
+                    <th>{{ field.verbose_name }}</th>
                 {% endif %}
               {% endfor %}
             </tr>
@@ -21,9 +21,13 @@
             {% for object in object_list  %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                {% for fields in object|model_object_fields_list %}
-                  {% if fields|is_field_printable %}
-                    <td>{{ fields|model_field_value_object:object }}</td>
+                {% for field in object|model_object_fields_list %}
+                  {% if field|is_field_printable %}
+                    {% if field.primary_key %}
+                      <td><a href="{% url 'event_logger_detail_view' pk=field|model_field_value_object:object %}">{{ field|model_field_value_object:object }}</a></td>
+                    {% else %}
+                      <td>{{ field|model_field_value_object:object }}</td>
+                    {% endif %}
                   {% endif %}
                 {% endfor %}
               </tr>
@@ -34,6 +38,7 @@
       {% else %}
 
       <ul>
+
           {% for log_record in object_list %}
               <li>{{ log_record }}</li>
           {% endfor %}

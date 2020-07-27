@@ -34,6 +34,8 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.event_path, 'n/a')
         self.assertEqual(str(test_object), '1. Anonymous performed no specified operation on None at n/a ' + str(test_object.get_timesince()) + ' ago')
         self.assertEqual(test_object.get_user_representer(), test_object.__class__._meta.get_field('user_object_id').default)
+        self.assertEqual(test_object.get_user_object_absolute_url(), '#')
+        self.assertEqual(test_object.get_target_object_absolute_url(), '#')
 
     def test_log_records_dummy_data_one(self):
         """Testing if database inserted data are working properly"""
@@ -49,3 +51,5 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.event_path, '/test/user/path/')
         self.assertEqual(str(test_object), '2. test_user_one performed read operation on test_user_two at /test/user/path/ ' + str(test_object.get_timesince()) + ' ago')
         self.assertEqual(test_object.get_user_representer(), 'test_user_one')
+        self.assertEqual(test_object.get_user_object_absolute_url(), '#')
+        self.assertEqual(test_object.get_target_object_absolute_url(), '#')

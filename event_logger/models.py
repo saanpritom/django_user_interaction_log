@@ -2,6 +2,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.timesince import timesince as djtimesince
 from django.utils.timezone import now
+from django.urls import reverse
 from django.db import models
 from .configs import ModuleConfigurations
 
@@ -18,12 +19,14 @@ class LogRecordsModel(models.Model):
         Event Path will be the URL where the action has taken place. If no URL has found then it will be null.
         Action Time represents the time and date of the action"""
     user_content_type = models.ForeignKey(ContentType, null=True, blank=True,
-                                          related_name='log_user', on_delete=models.CASCADE,
-                                          db_index=True, verbose_name='Log User Content Type')
-    user_object_id = models.CharField(max_length=255, db_index=True, verbose_name='Log User ID', default='Anonymous')
+                                          related_name='log_user_content_type', on_delete=models.CASCADE, db_index=True,
+                                          verbose_name='Log User Content Type')
+    user_object_id = models.CharField(max_length=255, db_index=True,
+                                      verbose_name='Log User ID', default='Anonymous')
     log_user = GenericForeignKey('user_content_type', 'user_object_id')
-    log_detail = models.TextField(verbose_name='Log Detail', default='no specified operation')
-    target_content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name='log_target',
+    log_detail = models.TextField(verbose_name='Log Detail',
+                                  default='no specified operation')
+    target_content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name='log_target_content_type',
                                             on_delete=models.CASCADE, db_index=True,
                                             verbose_name='Log Target Content Type')
     target_object_id = models.CharField(max_length=255, null=True, blank=True, db_index=True,
@@ -43,6 +46,29 @@ class LogRecordsModel(models.Model):
             {log_record_id} + {user} + performed + {log_message} + on + {target_object} + at + {event_path} +
             {since_time} ago"""
         return str(self.id) + '. ' + self.get_user_representer() + ' performed ' + self.log_detail + ' on ' + str(self.log_target) + ' at ' + self.event_path + ' ' + str(self.get_timesince()) + ' ago'
+
+    def get_absolute_url(self):
+        return reverse('event_logger_detail_view', args=[self.id])
+
+    def get_user_object_absolute_url(self):
+        """Return the absolute url of the User object. If not found then return #"""
+        if self.log_user is not None:
+            if hasattr(self.log_user, 'get_absolute_url'):
+                return self.log_user.get_absolute_url()
+            else:
+                return '#'
+        else:
+            return '#'
+
+    def get_target_object_absolute_url(self):
+        """Return the absolute url of the Target object. If not found then return #"""
+        if self.log_target is not None:
+            if hasattr(self.log_target, 'get_absolute_url'):
+                return self.log_target.get_absolute_url()
+            else:
+                return '#'
+        else:
+            return '#'
 
     def get_user_representer(self):
         """This returns a string representation of the user instance. By default it calls the __str__ method
