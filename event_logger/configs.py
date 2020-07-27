@@ -10,6 +10,7 @@ class ModuleConfigurations:
 
     default_allow_sensitive_test_case = False   # check self.allow_sensitive_test_cases() method
     default_user_representer_field = '__str__'  # check self.get_default_user_representer_field() method
+    default_log_list_paginated_by = 100  # check self.get_log_records_list_pagination() method
 
     def get_settings_object(self, on_test, test_settings_object):
         """If it is a Test Case then return test_settings_object. If not then return the settings object"""
@@ -54,3 +55,19 @@ class ModuleConfigurations:
                 return self.default_user_representer_field
         else:
             return self.default_user_representer_field
+
+    def get_log_records_list_pagination(self, on_test=False, test_settings_object=None):
+        """This set the pagination number of the log list views. If you want to change it then please change
+            list_paginated_by keyword on EVENT_LOGGER_SETTINGS"""
+        config_settings_object = self.get_settings_object(on_test, test_settings_object)
+
+        if hasattr(config_settings_object, 'EVENT_LOGGER_SETTINGS'):
+            if 'list_paginated_by' in config_settings_object.EVENT_LOGGER_SETTINGS:
+                if isinstance(config_settings_object.EVENT_LOGGER_SETTINGS['list_paginated_by'], int):
+                    return config_settings_object.EVENT_LOGGER_SETTINGS['list_paginated_by']
+                else:
+                    raise ValidationError('list_paginated_by value must be an Integer')
+            else:
+                return self.default_log_list_paginated_by
+        else:
+            return self.default_log_list_paginated_by
