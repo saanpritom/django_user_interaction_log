@@ -19,6 +19,18 @@ class ModuleConfigurations:
         else:
             return test_settings_object
 
+    def is_default_settings_modified(self, settings_object):
+        """This function return True if EVENT_LOGGER_SETTINGS is on the settings file otherwise return False"""
+        if hasattr(settings_object, 'EVENT_LOGGER_SETTINGS'):
+            return True
+        return False
+
+    def is_key_in_dict(self, dict, key):
+        """Returns True if the key found on the dict otherwise False"""
+        if key in dict:
+            return True
+        return False
+
     def allow_sensitive_test_cases(self, on_test=False, test_settings_object=None):
         """The default value is FALSE. If it is TRUE then it will run some model based TestCases which may not be
            suitable for your application. If it throws any error then just make it FALSE. The second argument
@@ -27,8 +39,8 @@ class ModuleConfigurations:
            settings object if on_test is True"""
         config_settings_object = self.get_settings_object(on_test, test_settings_object)
 
-        if hasattr(config_settings_object, 'EVENT_LOGGER_SETTINGS'):
-            if 'sensitive_test_cases' in config_settings_object.EVENT_LOGGER_SETTINGS:
+        if self.is_default_settings_modified(config_settings_object):
+            if self.is_key_in_dict(config_settings_object.EVENT_LOGGER_SETTINGS, 'sensitive_test_cases'):
                 if config_settings_object.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is True:
                     return True
                 elif config_settings_object.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is False:
@@ -45,8 +57,8 @@ class ModuleConfigurations:
            application"""
         config_settings_object = self.get_settings_object(on_test, test_settings_object)
 
-        if hasattr(config_settings_object, 'EVENT_LOGGER_SETTINGS'):
-            if 'user_representer_field' in config_settings_object.EVENT_LOGGER_SETTINGS:
+        if self.is_default_settings_modified(config_settings_object):
+            if self.is_key_in_dict(config_settings_object.EVENT_LOGGER_SETTINGS, 'user_representer_field'):
                 if isinstance(config_settings_object.EVENT_LOGGER_SETTINGS['user_representer_field'], str):
                     return config_settings_object.EVENT_LOGGER_SETTINGS['user_representer_field']
                 else:
@@ -61,8 +73,8 @@ class ModuleConfigurations:
             list_paginated_by keyword on EVENT_LOGGER_SETTINGS"""
         config_settings_object = self.get_settings_object(on_test, test_settings_object)
 
-        if hasattr(config_settings_object, 'EVENT_LOGGER_SETTINGS'):
-            if 'list_paginated_by' in config_settings_object.EVENT_LOGGER_SETTINGS:
+        if self.is_default_settings_modified(config_settings_object):
+            if self.is_key_in_dict(config_settings_object.EVENT_LOGGER_SETTINGS, 'list_paginated_by'):
                 if isinstance(config_settings_object.EVENT_LOGGER_SETTINGS['list_paginated_by'], int):
                     return config_settings_object.EVENT_LOGGER_SETTINGS['list_paginated_by']
                 else:

@@ -22,12 +22,14 @@ class ModuleConfigurationsTestCases(TestCase):
         setattr(fake_settings_object.EVENT_LOGGER_SETTINGS, 'EVENT_LOGGER_SETTINGS', {})
         fake_settings_object.EVENT_LOGGER_SETTINGS.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] = False
         fake_settings_object.EVENT_LOGGER_SETTINGS.EVENT_LOGGER_SETTINGS['user_representer_field'] = 'email'
+        fake_settings_object.EVENT_LOGGER_SETTINGS.EVENT_LOGGER_SETTINGS['list_paginated_by'] = 500
         fake_settings_object_list.append(fake_settings_object)
         fake_settings_object = type('test', (object,), {})()
         fake_settings_object.EVENT_LOGGER_SETTINGS = lambda: None
         setattr(fake_settings_object.EVENT_LOGGER_SETTINGS, 'EVENT_LOGGER_SETTINGS', {})
         fake_settings_object.EVENT_LOGGER_SETTINGS.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] = True
         fake_settings_object.EVENT_LOGGER_SETTINGS.EVENT_LOGGER_SETTINGS['user_representer_field'] = True
+        fake_settings_object.EVENT_LOGGER_SETTINGS.EVENT_LOGGER_SETTINGS['list_paginated_by'] = 'string data'
         fake_settings_object_list.append(fake_settings_object)
         fake_settings_object = type('test', (object,), {})()
         fake_settings_object.EVENT_LOGGER_SETTINGS = lambda: None
@@ -52,3 +54,11 @@ class ModuleConfigurationsTestCases(TestCase):
         self.assertEqual(self.test_class_name.get_default_user_representer_field(True, test_settings_object_list[1].EVENT_LOGGER_SETTINGS), '__str__')
         self.assertEqual(self.test_class_name.get_default_user_representer_field(True, test_settings_object_list[2].EVENT_LOGGER_SETTINGS), 'email')
         self.assertRaises(ValidationError, self.test_class_name.get_default_user_representer_field, on_test=True, test_settings_object=test_settings_object_list[3].EVENT_LOGGER_SETTINGS)
+
+    def test_get_log_records_list_pagination(self):
+        test_settings_object_list = self.setUp()
+        self.assertEqual(self.test_class_name.default_log_list_paginated_by, 100)
+        self.assertEqual(self.test_class_name.get_log_records_list_pagination(True, test_settings_object_list[0]), 100)
+        self.assertEqual(self.test_class_name.get_log_records_list_pagination(True, test_settings_object_list[1].EVENT_LOGGER_SETTINGS), 100)
+        self.assertEqual(self.test_class_name.get_log_records_list_pagination(True, test_settings_object_list[2].EVENT_LOGGER_SETTINGS), 500)
+        self.assertRaises(ValidationError, self.test_class_name.get_log_records_list_pagination, on_test=True, test_settings_object=test_settings_object_list[3].EVENT_LOGGER_SETTINGS)
