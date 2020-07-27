@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from ..models import LogRecordsModel
-import uuid
 
 
 class LogRecordsModelTestCase(TestCase):
@@ -10,7 +9,6 @@ class LogRecordsModelTestCase(TestCase):
        It initialize and create some test values and run various tests depends on the value. If you want
        to run your own tests then you may extend this class and run your testcase here"""
     model = LogRecordsModel
-    uuid_default_id = uuid.uuid4()
 
     def setUp(self):
         """Setting up some fake datas depends on various scenarios"""

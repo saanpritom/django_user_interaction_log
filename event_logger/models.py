@@ -2,8 +2,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.timesince import timesince as djtimesince
 from django.utils.timezone import now
-from django.conf import settings
 from django.db import models
+from .configs import ModuleConfigurations
 
 
 # Create your models here.
@@ -51,13 +51,14 @@ class LogRecordsModel(models.Model):
         if self.log_user is None:
             return str(self.__class__._meta.get_field('user_object_id').default)
         else:
-            if hasattr(settings, 'EVENT_LOGGER_SETTINGS'):
-                if 'user_representer_field' in settings.EVENT_LOGGER_SETTINGS:
-                    return str(getattr(self.log_user, settings.EVENT_LOGGER_SETTINGS['user_representer_field']))
-                else:
-                    return str(self.log_user)
-            else:
+            user_model_field = ModuleConfigurations().get_default_user_representer_field()
+            if user_model_field == '__str__':
                 return str(self.log_user)
+            else:
+                try:
+                    return str(getattr(self.log_user, user_model_field))
+                except AttributeError:
+                    return "The selected User Representer Field doesn't exists."
 
     def get_timesince(self):
         """This method returns the time difference between today and the log creation time"""
