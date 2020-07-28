@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError
 from ..models import LogRecordsModel
 
 
@@ -53,3 +54,10 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.get_user_representer(), 'test_user_one')
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')
+
+    def test_log_records_custom_clean_method(self):
+        """Testing if the custom clean method is working properly"""
+        test_object = self.get_test_object(2)
+        test_object.log_user = self.get_test_object(1)
+        self.assertRaises(ValidationError, test_object.clean)
+        self.assertRaisesMessage(ValidationError, 'The log user argument must be an User instance', test_object.clean)

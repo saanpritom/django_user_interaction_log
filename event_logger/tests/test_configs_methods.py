@@ -45,7 +45,11 @@ class ModuleConfigurationsTestCases(TestCase):
         self.assertEqual(self.test_class_name.allow_sensitive_test_cases(True, test_settings_object_list[1].EVENT_LOGGER_SETTINGS), False)
         self.assertEqual(self.test_class_name.allow_sensitive_test_cases(True, test_settings_object_list[2].EVENT_LOGGER_SETTINGS), False)
         self.assertEqual(self.test_class_name.allow_sensitive_test_cases(True, test_settings_object_list[3].EVENT_LOGGER_SETTINGS), True)
-        self.assertRaises(ValidationError, self.test_class_name.allow_sensitive_test_cases, on_test=True, test_settings_object=test_settings_object_list[4].EVENT_LOGGER_SETTINGS)
+        self.assertRaises(ValidationError, self.test_class_name.allow_sensitive_test_cases, on_test=True,
+                          test_settings_object=test_settings_object_list[4].EVENT_LOGGER_SETTINGS)
+        self.assertRaisesMessage(ValidationError, 'sensitive_test_cases value is expected a Boolean value',
+                                 self.test_class_name.allow_sensitive_test_cases, on_test=True,
+                                 test_settings_object=test_settings_object_list[4].EVENT_LOGGER_SETTINGS)
 
     def test_get_default_user_representer_field(self):
         test_settings_object_list = self.setUp()
@@ -53,7 +57,11 @@ class ModuleConfigurationsTestCases(TestCase):
         self.assertEqual(self.test_class_name.get_default_user_representer_field(True, test_settings_object_list[0]), '__str__')
         self.assertEqual(self.test_class_name.get_default_user_representer_field(True, test_settings_object_list[1].EVENT_LOGGER_SETTINGS), '__str__')
         self.assertEqual(self.test_class_name.get_default_user_representer_field(True, test_settings_object_list[2].EVENT_LOGGER_SETTINGS), 'email')
-        self.assertRaises(ValidationError, self.test_class_name.get_default_user_representer_field, on_test=True, test_settings_object=test_settings_object_list[3].EVENT_LOGGER_SETTINGS)
+        self.assertRaises(ValidationError, self.test_class_name.get_default_user_representer_field, on_test=True,
+                          test_settings_object=test_settings_object_list[3].EVENT_LOGGER_SETTINGS)
+        self.assertRaisesMessage(ValidationError, 'user_representer_field value must be a string',
+                                 self.test_class_name.get_default_user_representer_field,
+                                 on_test=True, test_settings_object=test_settings_object_list[3].EVENT_LOGGER_SETTINGS)
 
     def test_get_log_records_list_pagination(self):
         test_settings_object_list = self.setUp()
@@ -62,3 +70,6 @@ class ModuleConfigurationsTestCases(TestCase):
         self.assertEqual(self.test_class_name.get_log_records_list_pagination(True, test_settings_object_list[1].EVENT_LOGGER_SETTINGS), 100)
         self.assertEqual(self.test_class_name.get_log_records_list_pagination(True, test_settings_object_list[2].EVENT_LOGGER_SETTINGS), 500)
         self.assertRaises(ValidationError, self.test_class_name.get_log_records_list_pagination, on_test=True, test_settings_object=test_settings_object_list[3].EVENT_LOGGER_SETTINGS)
+        self.assertRaisesMessage(ValidationError, 'list_paginated_by value must be an Integer',
+                                 self.test_class_name.get_log_records_list_pagination, on_test=True,
+                                 test_settings_object=test_settings_object_list[3].EVENT_LOGGER_SETTINGS)

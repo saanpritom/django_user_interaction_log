@@ -1,6 +1,8 @@
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.timesince import timesince as djtimesince
+from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 from django.utils.timezone import now
 from django.urls import reverse
 from django.db import models
@@ -64,6 +66,14 @@ class LogRecordsModel(models.Model):
                 return '#'
         else:
             return '#'
+
+    def clean(self):
+        """Customizing clean method to check if the log_user is actually an User instance. If None found then
+            Anonymous user will return"""
+        super().clean()
+        if self.log_user is not None:
+            if isinstance(self.log_user, get_user_model()) is False:
+                raise ValidationError('The log user argument must be an User instance')
 
     def get_user_representer(self):
         """This returns a string representation of the user instance. By default it calls the __str__ method
