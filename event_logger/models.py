@@ -18,19 +18,14 @@ class LogRecordsModel(models.Model):
         will be a blank one.
         Event Path will be the URL where the action has taken place. If no URL has found then it will be null.
         Action Time represents the time and date of the action"""
-    user_content_type = models.ForeignKey(ContentType, null=True, blank=True,
-                                          related_name='log_user_content_type', on_delete=models.CASCADE, db_index=True,
-                                          verbose_name='Log User Content Type')
-    user_object_id = models.CharField(max_length=255, db_index=True,
-                                      verbose_name='Log User ID', default='Anonymous')
+    user_content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name='log_user_content_type',
+                                          on_delete=models.CASCADE, db_index=True, verbose_name='Log User Content Type')
+    user_object_id = models.CharField(max_length=255, db_index=True, verbose_name='Log User ID', default='Anonymous')
     log_user = GenericForeignKey('user_content_type', 'user_object_id')
-    log_detail = models.TextField(verbose_name='Log Detail',
-                                  default='no specified operation')
+    log_detail = models.TextField(verbose_name='Log Detail', default='no specified operation')
     target_content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name='log_target_content_type',
-                                            on_delete=models.CASCADE, db_index=True,
-                                            verbose_name='Log Target Content Type')
-    target_object_id = models.CharField(max_length=255, null=True, blank=True, db_index=True,
-                                        verbose_name='Log Target Object ID')
+                                            on_delete=models.CASCADE, db_index=True, verbose_name='Log Target Content Type')
+    target_object_id = models.CharField(max_length=255, null=True, blank=True, db_index=True, verbose_name='Log Target Object ID')
     log_target = GenericForeignKey('target_content_type', 'target_object_id')
     event_path = models.TextField(verbose_name='Event Path', default='n/a')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')

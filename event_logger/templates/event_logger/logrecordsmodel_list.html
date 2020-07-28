@@ -9,27 +9,25 @@
         <table class="event_logger_records_table">
           <thead>
             <tr>
-              <th>Sl.</td>
-              {% for field in object_list.0|model_object_fields_list %}
-                {% if field|is_field_printable %}
-                    <th>{{ field.verbose_name }}</th>
-                {% endif %}
-              {% endfor %}
+              <th>Sl.</th>
+              <th>Log ID</th>
+              <th>Log User</th>
+              <th>Log Detail</th>
+              <th>Target Object</th>
+              <th>Event Path</th>
+              <th>Created At</th>
             </tr>
           </thead>
           <tbody>
             {% for object in object_list  %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                {% for field in object|model_object_fields_list %}
-                  {% if field|is_field_printable %}
-                    {% if field.primary_key %}
-                      <td><a href="{% url 'event_logger_detail_view' pk=field|model_field_value_object:object %}">{{ field|model_field_value_object:object }}</a></td>
-                    {% else %}
-                      <td>{{ field|model_field_value_object:object }}</td>
-                    {% endif %}
-                  {% endif %}
-                {% endfor %}
+                <td><a href="{{ object.get_absolute_url }}">{{ object.pk }}</a></td>
+                <td><a href="{{ object.get_user_object_absolute_url }}">{{ object.get_user_representer }}</a></td>
+                <td>{{ object.log_detail }}</td>
+                <td><a href="{{ object.get_target_object_absolute_url }}">{{ object.target_object_id }}</a></td>
+                <td>{{ object.event_path }}</td>
+                <td>{{ object.created_at }}</td>
               </tr>
             {% endfor %}
           </tbody>
