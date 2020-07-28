@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_nose',
     'event_logger',
 ]
 
@@ -124,3 +125,10 @@ STATIC_URL = '/static/'
 EVENT_LOGGER_SETTINGS = {
     'sensitive_test_cases': True,
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=event_logger',
+]
