@@ -22,7 +22,7 @@ class LogRecordsModel(models.Model):
         Action Time represents the time and date of the action"""
     user_content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name='log_user_content_type',
                                           on_delete=models.CASCADE, db_index=True, verbose_name='Log User Content Type')
-    user_object_id = models.CharField(max_length=255, db_index=True, verbose_name='Log User ID', default='Anonymous')
+    user_object_id = models.CharField(max_length=255, db_index=True, verbose_name='Log User ID', default='0')
     log_user = GenericForeignKey('user_content_type', 'user_object_id')
     log_detail = models.TextField(verbose_name='Log Detail', default='no specified operation')
     target_content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name='log_target_content_type',
@@ -70,17 +70,35 @@ class LogRecordsModel(models.Model):
     def clean(self):
         """Customizing clean method to check if the log_user is actually an User instance. If None found then
             Anonymous user will return"""
-        super().clean()
+        if self.user_object_id is None:
+            self.user_object_id = str(self.__class__._meta.get_field('user_object_id').default)
+        if self.log_detail is None:
+            self.log_detail = str(self.__class__._meta.get_field('log_detail').default)
+        if self.event_path is None:
+            self.event_path = str(self.__class__._meta.get_field('event_path').default)
         if self.log_user is not None:
             if isinstance(self.log_user, get_user_model()) is False:
                 raise ValidationError('The log user argument must be an User instance')
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        """Customizing save method to call the clean method when the save method is being called"""
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def is_user_anonymous(self):
+        """This method True if the user_object_id is 0 otherwise False"""
+        if self.user_object_id == self.__class__._meta.get_field('user_object_id').default:
+            return True
+        else:
+            return False
 
     def get_user_representer(self):
         """This returns a string representation of the user instance. By default it calls the __str__ method
            of the user class. But if you want to change it then please add 'user_representer_field' on
            'EVENT_LOGGER_SETTINGS' at your settings file. If the user is Anonymous then it simply return Anonymous"""
         if self.log_user is None:
-            return str(self.__class__._meta.get_field('user_object_id').default)
+            return 'Anonymous'
         else:
             user_model_field = ModuleConfigurations().get_default_user_representer_field()
             if user_model_field == '__str__':

@@ -26,7 +26,7 @@ class LogRecordsModelTestCase(TestCase):
         test_object = self.get_test_object(1)
         self.assertEqual(test_object.id, 1)
         self.assertEqual(test_object.user_content_type, None)
-        self.assertEqual(test_object.user_object_id, 'Anonymous')
+        self.assertEqual(test_object.user_object_id, '0')
         self.assertEqual(test_object.log_user, None)
         self.assertEqual(test_object.log_detail, 'no specified operation')
         self.assertEqual(test_object.target_content_type, None)
@@ -34,13 +34,26 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.log_target, None)
         self.assertEqual(test_object.event_path, 'n/a')
         self.assertEqual(str(test_object), '1. Anonymous performed no specified operation on None at n/a ' + str(test_object.get_timesince()) + ' ago')
-        self.assertEqual(test_object.get_user_representer(), test_object.__class__._meta.get_field('user_object_id').default)
+        self.assertEqual(test_object.is_user_anonymous(), True)
+        self.assertEqual(test_object.get_user_representer(), 'Anonymous')
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')
+        #  performing the clean() method tests
+        test_object.user_object_id = None
+        test_object.log_detail = None
+        test_object.event_path = None
+        test_object.clean()
+        self.assertEqual(test_object.user_object_id, '0')
+        self.assertEqual(test_object.log_detail, 'no specified operation')
+        self.assertEqual(test_object.event_path, 'n/a')
+        test_object.log_user = self.get_test_object(2)
+        self.assertRaises(ValidationError, test_object.clean)
+        self.assertRaisesMessage(ValidationError, 'The log user argument must be an User instance', test_object.clean)
 
     def test_log_records_dummy_data_one(self):
         """Testing if database inserted data are working properly"""
         test_object = self.get_test_object(2)
+        test_object.clean()
         self.assertEqual(test_object.id, 2)
         self.assertNotEqual(test_object.user_content_type, None)
         self.assertEqual(test_object.user_object_id, str(get_user_model().objects.get(username='test_user_one').id))
@@ -51,13 +64,7 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.log_target, get_user_model().objects.get(username='test_user_two'))
         self.assertEqual(test_object.event_path, '/test/user/path/')
         self.assertEqual(str(test_object), '2. test_user_one performed read operation on test_user_two at /test/user/path/ ' + str(test_object.get_timesince()) + ' ago')
+        self.assertEqual(test_object.is_user_anonymous(), False)
         self.assertEqual(test_object.get_user_representer(), 'test_user_one')
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')
-
-    def test_log_records_custom_clean_method(self):
-        """Testing if the custom clean method is working properly"""
-        test_object = self.get_test_object(2)
-        test_object.log_user = self.get_test_object(1)
-        self.assertRaises(ValidationError, test_object.clean)
-        self.assertRaisesMessage(ValidationError, 'The log user argument must be an User instance', test_object.clean)

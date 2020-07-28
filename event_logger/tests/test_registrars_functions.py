@@ -1,0 +1,50 @@
+from django.test import TestCase
+from django.http import HttpRequest
+from django.contrib.auth import get_user_model
+from ..registrars import create_log_record
+
+
+class RegistrarsTestCase(TestCase):
+    """This class tests the functions on registrars.py file"""
+
+    def setUp(self):
+        self.test_create_log_record_dict = {}
+        request = HttpRequest()
+        request.path = '/test/request/path/'
+        test_user_one = get_user_model().objects.create(username='test_user_one', email='test_user_one@example.com', password='superacces123one')
+        test_user_two = get_user_model().objects.create(username='test_user_two', email='test_user_two@example.com', password='superacces123two')
+        self.test_create_log_record_dict['empty_log_record'] = create_log_record()
+        self.test_create_log_record_dict['full_log_record'] = create_log_record(request, test_user_one, 'read operation', test_user_two)
+
+    def test_create_log_record_empty(self):
+        test_object = self.test_create_log_record_dict['empty_log_record']
+        self.assertEqual(test_object.id, 1)
+        self.assertEqual(test_object.user_content_type, None)
+        self.assertEqual(test_object.user_object_id, '0')
+        self.assertEqual(test_object.log_user, None)
+        self.assertEqual(test_object.log_detail, 'no specified operation')
+        self.assertEqual(test_object.target_content_type, None)
+        self.assertEqual(test_object.target_object_id, None)
+        self.assertEqual(test_object.log_target, None)
+        self.assertEqual(test_object.event_path, 'n/a')
+        self.assertEqual(str(test_object), '1. Anonymous performed no specified operation on None at n/a ' + str(test_object.get_timesince()) + ' ago')
+        self.assertEqual(test_object.is_user_anonymous(), True)
+        self.assertEqual(test_object.get_user_representer(), 'Anonymous')
+        self.assertEqual(test_object.get_user_object_absolute_url(), '#')
+        self.assertEqual(test_object.get_target_object_absolute_url(), '#')
+
+    def test_create_log_record_full(self):
+        test_object = self.test_create_log_record_dict['full_log_record']
+        self.assertEqual(test_object.id, 2)
+        self.assertEqual(test_object.user_object_id, get_user_model().objects.get(username='test_user_one').id)
+        self.assertEqual(test_object.log_user, get_user_model().objects.get(username='test_user_one'))
+        self.assertEqual(test_object.log_detail, 'read operation')
+        self.assertNotEqual(test_object.target_content_type, None)
+        self.assertEqual(test_object.target_object_id, get_user_model().objects.get(username='test_user_two').id)
+        self.assertEqual(test_object.log_target, get_user_model().objects.get(username='test_user_two'))
+        self.assertEqual(test_object.event_path, '/test/request/path/')
+        self.assertEqual(str(test_object), '2. test_user_one performed read operation on test_user_two at /test/request/path/ ' + str(test_object.get_timesince()) + ' ago')
+        self.assertEqual(test_object.is_user_anonymous(), False)
+        self.assertEqual(test_object.get_user_representer(), 'test_user_one')
+        self.assertEqual(test_object.get_user_object_absolute_url(), '#')
+        self.assertEqual(test_object.get_target_object_absolute_url(), '#')
