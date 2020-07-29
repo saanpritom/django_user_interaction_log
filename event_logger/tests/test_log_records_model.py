@@ -21,12 +21,9 @@ class LogRecordsModelTestCase(TestCase):
         self.test_exists_user_model_field = 'email'
         self.test_non_exists_user_model_field = 'dhaka'
 
-    def get_this_test_object(self, id):
-        return get_object_or_404(self.model, pk=id)
-
     def test_log_records_default_data(self):
         """Testing if database default data are working properly"""
-        test_object = self.get_this_test_object(1)
+        test_object = get_object_or_404(self.model, pk=1)
         self.assertEqual(test_object.id, 1)
         self.assertEqual(test_object.user_content_type, None)
         self.assertEqual(test_object.user_object_id, '0')
@@ -50,13 +47,13 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.user_object_id, '0')
         self.assertEqual(test_object.log_detail, 'no specified operation')
         self.assertEqual(test_object.event_path, 'n/a')
-        test_object.log_user = self.get_this_test_object(2)
+        test_object.log_user = get_object_or_404(self.model, pk=2)
         self.assertRaises(ValidationError, test_object.clean)
         self.assertRaisesMessage(ValidationError, 'The log user argument must be an User instance', test_object.clean)
 
     def test_log_records_dummy_data_one(self):
         """Testing if database inserted data are working properly"""
-        test_object = self.get_this_test_object(2)
+        test_object = get_object_or_404(self.model, pk=2)
         test_object.clean()
         self.assertEqual(test_object.id, 2)
         self.assertNotEqual(test_object.user_content_type, None)
