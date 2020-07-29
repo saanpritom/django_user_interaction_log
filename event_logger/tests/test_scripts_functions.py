@@ -12,7 +12,8 @@ class ScriptsFunctionsTestCase(TestCase):
         get_request_event_path_dict['fake_request_object'] = type('test', (object,), {})()
         get_request_event_path_dict['empty_request_object'] = HttpRequest()
         request = HttpRequest()
-        get_request_event_path_dict['deleted_path_request_object'] = delattr(request, 'path')
+        request = delattr(request, 'path')
+        get_request_event_path_dict['deleted_path_request_object'] = request
         request = HttpRequest()
         request.path = '/demo/path/23/'
         get_request_event_path_dict['request_object_with_path'] = request

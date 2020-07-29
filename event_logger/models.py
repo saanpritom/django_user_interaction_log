@@ -93,14 +93,17 @@ class LogRecordsModel(models.Model):
         else:
             return False
 
-    def get_user_representer(self):
+    def get_user_representer(self, test_user_model_field=None):
         """This returns a string representation of the user instance. By default it calls the __str__ method
            of the user class. But if you want to change it then please add 'user_representer_field' on
            'EVENT_LOGGER_SETTINGS' at your settings file. If the user is Anonymous then it simply return Anonymous"""
         if self.log_user is None:
             return 'Anonymous'
         else:
-            user_model_field = ModuleConfigurations().get_default_user_representer_field()
+            if test_user_model_field is None:
+                user_model_field = ModuleConfigurations().get_default_user_representer_field()
+            else:
+                user_model_field = test_user_model_field
             if user_model_field == '__str__':
                 return str(self.log_user)
             else:

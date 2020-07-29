@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
+from django.urls import reverse
 from ..models import LogRecordsModel
 
 
@@ -17,6 +18,8 @@ class LogRecordsModelTestCase(TestCase):
         test_user_two = get_user_model().objects.create(username='test_user_two', email='test_user_two@example.com', password='superacces123two')
         self.model.objects.create()
         self.model.objects.create(log_user=test_user_one, log_detail='read operation', log_target=test_user_two, event_path='/test/user/path/')
+        self.test_exists_user_model_field = 'email'
+        self.test_non_exists_user_model_field = 'dhaka'
 
     def get_this_test_object(self, id):
         return get_object_or_404(self.model, pk=id)
@@ -36,6 +39,7 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(str(test_object), '1. Anonymous performed no specified operation on None at n/a ' + str(test_object.get_timesince()) + ' ago')
         self.assertEqual(test_object.is_user_anonymous(), True)
         self.assertEqual(test_object.get_user_representer(), 'Anonymous')
+        self.assertEqual(test_object.get_absolute_url(), reverse('event_logger_detail_view', args=[test_object.id]))
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')
         #  performing the clean() method tests
@@ -66,5 +70,8 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(str(test_object), '2. test_user_one performed read operation on test_user_two at /test/user/path/ ' + str(test_object.get_timesince()) + ' ago')
         self.assertEqual(test_object.is_user_anonymous(), False)
         self.assertEqual(test_object.get_user_representer(), 'test_user_one')
+        self.assertEqual(test_object.get_user_representer(test_user_model_field=self.test_exists_user_model_field), 'test_user_one@example.com')
+        self.assertEqual(test_object.get_user_representer(test_user_model_field=self.test_non_exists_user_model_field), "The selected User Representer Field doesn't exists.")
+        self.assertEqual(test_object.get_absolute_url(), reverse('event_logger_detail_view', args=[test_object.id]))
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')

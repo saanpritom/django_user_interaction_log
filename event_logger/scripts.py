@@ -10,12 +10,8 @@ def get_request_event_path(request):
         return None
     else:
         if isinstance(request, HttpRequest):
-            if hasattr(request, 'path'):
-                if request.path == '':
-                    return None
-                else:
-                    return request.path
-            else:
+            if request.path == '':
                 return None
+            return request.path
         else:
             raise ValidationError('request must be a Django HttpRequest object')
