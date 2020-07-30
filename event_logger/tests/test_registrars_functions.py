@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.http import HttpRequest
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from ..registrars import create_log_record
 
 
@@ -13,8 +14,9 @@ class RegistrarsTestCase(TestCase):
         request.path = '/test/request/path/'
         test_user_one = get_user_model().objects.create(username='test_user_one', email='test_user_one@example.com', password='superacces123one')
         test_user_two = get_user_model().objects.create(username='test_user_two', email='test_user_two@example.com', password='superacces123two')
+        setattr(request, 'user', test_user_one)
         self.test_create_log_record_dict['empty_log_record'] = create_log_record()
-        self.test_create_log_record_dict['full_log_record'] = create_log_record(request, test_user_one, 'read operation', test_user_two)
+        self.test_create_log_record_dict['full_log_record'] = create_log_record(request, 'read operation', test_user_two)
 
     def test_create_log_record_empty(self):
         test_object = self.test_create_log_record_dict['empty_log_record']
@@ -48,3 +50,11 @@ class RegistrarsTestCase(TestCase):
         self.assertEqual(test_object.get_user_representer(), 'test_user_one')
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')
+
+    def test_create_log_record_error(self):
+        fake_request_object = type('test', (object,), {})()
+        fake_user_object = type('test', (object,), {})()
+        request = HttpRequest()
+        setattr(request, 'user', fake_user_object)
+        self.assertRaisesMessage(ValidationError, 'request must be a Django HttpRequest object', create_log_record, fake_request_object)
+        self.assertRaisesMessage(ValidationError, 'The request.user object seems to be tempered', create_log_record, request)
