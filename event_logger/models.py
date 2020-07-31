@@ -27,7 +27,7 @@ class LogRecordsModel(models.Model):
     log_detail = models.TextField(verbose_name='Log Detail', default='no specified operation')
     target_content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name='log_target_content_type',
                                             on_delete=models.CASCADE, db_index=True, verbose_name='Log Target Content Type')
-    target_object_id = models.CharField(max_length=255, null=True, blank=True, db_index=True, verbose_name='Log Target Object ID')
+    target_object_id = models.CharField(max_length=255, db_index=True, null=True, blank=True, verbose_name='Log Target Object ID')
     log_target = GenericForeignKey('target_content_type', 'target_object_id')
     event_path = models.TextField(verbose_name='Event Path', default='n/a')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
@@ -42,7 +42,9 @@ class LogRecordsModel(models.Model):
             constructed with the following format.
             {log_record_id} + {user} + performed + {log_message} + on + {target_object} + at + {event_path} +
             {since_time} ago"""
-        return str(self.id) + '. ' + self.get_user_representer() + ' performed ' + self.log_detail + ' on ' + str(self.log_target) + ' at ' + self.event_path + ' ' + str(self.get_timesince()) + ' ago'
+        if self.log_target is None:
+            return str(self.id) + '. ' + self.get_user_representer() + ' performed ' + str(self.log_detail) + ' at ' + str(self.event_path) + ' ' + str(self.get_timesince()) + ' ago'
+        return str(self.id) + '. ' + self.get_user_representer() + ' performed ' + str(self.log_detail) + ' on ' + str(self.log_target) + ' at ' + str(self.event_path) + ' ' + str(self.get_timesince()) + ' ago'
 
     def get_absolute_url(self):
         return reverse('event_logger_detail_view', args=[self.id])

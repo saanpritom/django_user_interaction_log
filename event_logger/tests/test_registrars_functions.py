@@ -29,7 +29,7 @@ class RegistrarsTestCase(TestCase):
         self.assertEqual(test_object.target_object_id, None)
         self.assertEqual(test_object.log_target, None)
         self.assertEqual(test_object.event_path, 'n/a')
-        self.assertEqual(str(test_object), '1. Anonymous performed no specified operation on None at n/a ' + str(test_object.get_timesince()) + ' ago')
+        self.assertEqual(str(test_object), '1. Anonymous performed no specified operation at n/a ' + str(test_object.get_timesince()) + ' ago')
         self.assertEqual(test_object.is_user_anonymous(), True)
         self.assertEqual(test_object.get_user_representer(), 'Anonymous')
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
