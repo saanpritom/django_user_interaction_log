@@ -56,5 +56,7 @@ class RegistrarsTestCase(TestCase):
         fake_user_object = type('test', (object,), {})()
         request = HttpRequest()
         setattr(request, 'user', fake_user_object)
+        invalid_log_target = 'invalid_one'
         self.assertRaisesMessage(ValidationError, 'request must be a Django HttpRequest object', create_log_record, fake_request_object)
         self.assertRaisesMessage(ValidationError, 'The request.user object seems to be tempered', create_log_record, request)
+        self.assertRaisesMessage(ValidationError, 'log_target must be an instance of an object or none', create_log_record, log_target=invalid_log_target)
