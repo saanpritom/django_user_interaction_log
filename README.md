@@ -41,3 +41,9 @@ Example: 'user_representer_field': 'email' This will print email as the default 
 
 'list_paginated_by' means the pagination number for the log_list page. It is an integer number. Default is 100 but
 you can put any valid integer value
+
+
+Basic Usage
+-----------
+
+This package ships with
