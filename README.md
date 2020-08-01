@@ -28,14 +28,22 @@ After successful pip installation open your settings.py file and add 'event_logg
 
 ```python
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    ...
     'event_logger',
 ]
+```
+
+Include the event loggers URLconf in your project urls.py like this::
+
+```python
+path('event_logger/', include('event_logger.urls')),
+```
+
+Now run the app migration for creating the databases
+
+```python
+python manage.py makemigrations
+python manage.py migrate
 ```
 
 For Customizing settings there is a directory available for settings.py file. However, if you do not put the dictionary
