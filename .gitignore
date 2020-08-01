@@ -2,3 +2,4 @@
 django_event_logger
 htmlcov
 .coverage
+manage.py
