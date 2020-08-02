@@ -2,4 +2,8 @@
 django_event_logger
 htmlcov
 .coverage
+.tox
+django_event_logger.egg-info
+toxtests
 manage.py
+dist
