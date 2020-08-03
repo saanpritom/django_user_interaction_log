@@ -18,16 +18,16 @@ class ViewTestCases(TestCase):
         self.log_record = create_log_record(request=request, log_detail='test log view', log_target=self.target_user)
 
     def test_list_view_response(self):
-        request = self.factory.get(reverse('event_logger_list_view'))
+        request = self.factory.get(reverse('django_event_logger_list_view'))
         response = LogRecordsListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
     def test_example_mixin_view_response(self):
-        request = self.factory.get(reverse('event_logger_mixin_example_view'))
+        request = self.factory.get(reverse('django_event_logger_mixin_example_view'))
         response = ExampleViewWithMixin.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
     def test_example_function_view_response(self):
-        request = self.factory.get(reverse('event_logger_function_example_view'))
+        request = self.factory.get(reverse('django_event_logger_function_example_view'))
         response = example_function_based_view(request)
         self.assertEqual(response.status_code, 200)
