@@ -6,8 +6,8 @@ Description
 
 Django Event Logger keeps the log record of any operation on a Django
 based application. Such as an user views a page on a Django application
-then it may keeps record of the event. Like ‘ExampleUser has performed
-read operation on ExampleCar at /example/path/ 10 minutes ago’. This is
+then it may keeps record of the event. Like 'ExampleUser has performed
+read operation on ExampleCar at /example/path/ 10 minutes ago'. This is
 a dummy log record.
 
 Installation
@@ -31,7 +31,7 @@ Then run
 to download and install all the required packages.
 
 After successful pip installation open your settings.py file and add
-‘event_logger’, on your INSTALLED_APPS list.
+'event_logger', on your INSTALLED_APPS list.
 
 .. code:: python
 
@@ -67,19 +67,19 @@ then it will use the default values for the keys.
 
 These are the default values for the keywords.
 
-1. ‘sensitive_test_cases’ means the package will run some test cases
+1. 'sensitive_test_cases' means the package will run some test cases
    that are dependent on a specific environment. Most of the cases these
    tests will not create any error However, if it does then just make it
    False to avoid those test cases running
 
-2. ‘user_representer_field’ means the default field that will be used to
-   construct the full log message for the actor. ‘**str**’ means it is
+2. 'user_representer_field' means the default field that will be used to
+   construct the full log message for the actor. '**str**' means it is
    pointing to the get_user_model default **str** method. If you want to
    change it then please write the valid name of a user field. Example:
-   ‘user_representer_field’: ‘email’ This will print email as the
+   'user_representer_field': 'email' This will print email as the
    default field for the actor
 
-3. ‘list_paginated_by’ means the pagination number for the log_list
+3. 'list_paginated_by' means the pagination number for the log_list
    page. It is an integer number. Default is 100 but you can put any
    valid integer value
 
@@ -97,7 +97,7 @@ on your views.py file import the following module
 
 .. code:: python
 
-   from django_event_logger.registrars import create_log_record
+   from event_logger.registrars import create_log_record
 
 and on your function based view just add this method as below
 
@@ -115,10 +115,10 @@ and on your function based view just add this method as below
 Here the create_log_record() function is taking 3 optional arguments.
 
 1. request (Which is a Django HttpRequest object. If not provide then
-   it’s default value is None)
+   it's default value is None)
 
 2. log_detail (A text describing the action performed on that view by
-   the user. If not provided then it’s default value is None)
+   the user. If not provided then it's default value is None)
 
 3. log_target (The instance of the page object. Suppose the page is
    showing a Detail view of Books. so the log_target will be the single
@@ -135,7 +135,7 @@ on the views.py file import the following Mixin
 
 .. code:: python
 
-   from django_event_logger.mixins import EventLoggerMixin
+   from event_logger.mixins import EventLoggerMixin
 
 and on any class based views use this mixin as follow:
 
@@ -151,18 +151,19 @@ and on any class based views use this mixin as follow:
                return get_user_model().objects.first()
            return None
 
-Here two things to notice that the ‘event_logger_log_detail_message’ and
-‘get_log_target_object()’
+Here two things to notice that the 'event_logger_log_detail_message' and
+'get_log_target_object()'
 
-1. ‘event_logger_log_detail_message’ holds the action message performed
+1. 'event_logger_log_detail_message' holds the action message performed
    by the user on this view. If not assign then it will use the default
    None
-2. ‘get_log_target_object()’ this method returns the instance of the
+2. 'get_log_target_object()' this method returns the instance of the
    target object. Same as the log_target on the function based view.
    Just pass this view specific object here. If the page is a list view
    or there are no specific target_object then do not override this
    method. If not overridden the this will use the default value which
    is None
+
 
    Log Records List
    ----------------
@@ -171,7 +172,7 @@ Here two things to notice that the ‘event_logger_log_detail_message’ and
    one cannot add, update or delete anything on these records through these
    views. To add, delete or update a log record the user must have to use
    the Django default Admin Panel. Where this app will be found on the name
-   of ‘Event Logger’
+   of 'Event Logger'
 
    1. The default list view can be checked from this URL
 
@@ -186,8 +187,12 @@ Here two things to notice that the ‘event_logger_log_detail_message’ and
       https://your-ip-or-domain/event_logger/?format=file
 
    2. The default detail view can be checked from this URL
-      ``python     https://your-ip-or-domain/event_logger/3/`` Here 3 is
-      the primary key for that particular log record
+
+      .. code:: python
+
+         https://your-ip-or-domain/event_logger/3/
+
+      Here 3 is the primary key for that particular log record
 
    Package Creator
    ---------------
