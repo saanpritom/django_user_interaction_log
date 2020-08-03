@@ -36,7 +36,7 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(str(test_object), '1. Anonymous performed no specified operation at n/a ' + str(test_object.get_timesince()) + ' ago')
         self.assertEqual(test_object.is_user_anonymous(), True)
         self.assertEqual(test_object.get_user_representer(), 'Anonymous')
-        self.assertEqual(test_object.get_absolute_url(), reverse('event_logger_detail_view', args=[test_object.id]))
+        self.assertEqual(test_object.get_absolute_url(), reverse('django_event_logger_detail_view', args=[test_object.id]))
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')
         #  performing the clean() method tests
@@ -69,6 +69,6 @@ class LogRecordsModelTestCase(TestCase):
         self.assertEqual(test_object.get_user_representer(), 'test_user_one')
         self.assertEqual(test_object.get_user_representer(test_user_model_field=self.test_exists_user_model_field), 'test_user_one@example.com')
         self.assertEqual(test_object.get_user_representer(test_user_model_field=self.test_non_exists_user_model_field), "The selected User Representer Field doesn't exists.")
-        self.assertEqual(test_object.get_absolute_url(), reverse('event_logger_detail_view', args=[test_object.id]))
+        self.assertEqual(test_object.get_absolute_url(), reverse('django_event_logger_detail_view', args=[test_object.id]))
         self.assertEqual(test_object.get_user_object_absolute_url(), '#')
         self.assertEqual(test_object.get_target_object_absolute_url(), '#')

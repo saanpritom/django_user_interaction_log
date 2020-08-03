@@ -47,7 +47,7 @@ class LogRecordsModel(models.Model):
         return str(self.id) + '. ' + self.get_user_representer() + ' performed ' + str(self.log_detail) + ' on ' + str(self.log_target) + ' at ' + str(self.event_path) + ' ' + str(self.get_timesince()) + ' ago'
 
     def get_absolute_url(self):
-        return reverse('event_logger_detail_view', args=[self.id])
+        return reverse('django_event_logger_detail_view', args=[self.id])
 
     def get_user_object_absolute_url(self):
         """Return the absolute url of the User object. If not found then return #"""
