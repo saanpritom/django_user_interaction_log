@@ -3,68 +3,81 @@
 
 {% block event_logger_contents %}
     <div class="log_records_list">
-      <h2>{{ object_list.0|model_object_meta_data:'verbose_name_plural' }}</h2>
-      {% if request.GET.format == 'table' %}
+      {% if object_list %}
 
-        <table class="event_logger_records_table">
-          <thead>
-            <tr>
-              <th>Sl.</th>
-              <th>Log ID</th>
-              <th>Log User</th>
-              <th>Log Detail</th>
-              <th>Target Object</th>
-              <th>Event Path</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for object in object_list  %}
+        <h2>{{ object_list.0|model_object_meta_data:'verbose_name_plural' }}</h2>
+        {% if request.GET.format == 'table' %}
+
+          <table class="event_logger_records_table">
+            <thead>
               <tr>
-                <td>{{ forloop.counter }}</td>
-                <td><a href="{{ object.get_absolute_url }}">{{ object.pk }}</a></td>
-                <td><a href="{{ object.get_user_object_absolute_url }}">{{ object.get_user_representer }}</a></td>
-                <td>{{ object.log_detail }}</td>
-                <td><a href="{{ object.get_target_object_absolute_url }}">{{ object.target_object_id }}</a></td>
-                <td>{{ object.event_path }}</td>
-                <td>{{ object.created_at }}</td>
+                <th>Sl.</th>
+                <th>Log ID</th>
+                <th>Log User</th>
+                <th>Log Detail</th>
+                <th>Target Object</th>
+                <th>Event Path</th>
+                <th>Created At</th>
               </tr>
+            </thead>
+            <tbody>
+              {% for object in object_list  %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><a href="{{ object.get_absolute_url }}">{{ object.pk }}</a></td>
+                  <td><a href="{{ object.get_user_object_absolute_url }}">{{ object.get_user_representer }}</a></td>
+                  <td>{{ object.log_detail }}</td>
+                  <td><a href="{{ object.get_target_object_absolute_url }}">{{ object.target_object_id }}</a></td>
+                  <td>{{ object.event_path }}</td>
+                  <td>{{ object.created_at }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        {% else %}
+
+        <ul>
+
+            {% for log_record in object_list %}
+                <li>{{ log_record }}</li>
             {% endfor %}
-          </tbody>
-        </table>
+        </ul>
+
+        {% endif %}
 
       {% else %}
 
-      <ul>
-
-          {% for log_record in object_list %}
-              <li>{{ log_record }}</li>
-          {% endfor %}
-      </ul>
+        <p class="django-event-logger-default-message">No Results Found</p>
 
       {% endif %}
 
-
     </div>
 
-    <div class="log_records_pagination">
-      <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?format={{ request.GET.format }}&page=1">&laquo; first</a>
-            <a href="?format={{ request.GET.format }}&page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+    {% if object_list %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        <div class="log_records_pagination">
+          <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?format={{ request.GET.format }}&page=1">&laquo; first</a>
+                <a href="?format={{ request.GET.format }}&page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?format={{ request.GET.format }}&page={{ page_obj.next_page_number }}">next</a>
+                <a href="?format={{ request.GET.format }}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
         </span>
-
-        {% if page_obj.has_next %}
-            <a href="?format={{ request.GET.format }}&page={{ page_obj.next_page_number }}">next</a>
-            <a href="?format={{ request.GET.format }}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-
     </div>
+
+        </div>
+
+    {% endif %}
+
+
 {% endblock %}

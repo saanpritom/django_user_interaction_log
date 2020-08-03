@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from ..views import LogRecordsListView
 from ..registrars import create_log_record
+from ..configs import ModuleConfigurations
 from ..examples import ExampleViewWithMixin, example_function_based_view
 
 
@@ -28,6 +29,7 @@ class ViewTestCases(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_example_function_view_response(self):
-        request = self.factory.get(reverse('django_event_logger_function_example_view'))
-        response = example_function_based_view(request)
-        self.assertEqual(response.status_code, 200)
+        if ModuleConfigurations().default_allow_sensitive_test_case is True:
+            request = self.factory.get(reverse('django_event_logger_function_example_view'))
+            response = example_function_based_view(request)
+            self.assertEqual(response.status_code, 200)
