@@ -1,5 +1,4 @@
 .env
-django_event_logger
 htmlcov
 .coverage
 .tox
