@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from ..configs import ModuleConfigurations
+from django_event_logger.configs import ModuleConfigurations
 
 
 class ModuleConfigurationsTestCases(TestCase):

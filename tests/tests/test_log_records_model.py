@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from ..models import LogRecordsModel
+from django_event_logger.models import LogRecordsModel
 
 
 class LogRecordsModelTestCase(TestCase):

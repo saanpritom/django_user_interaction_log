@@ -6,3 +6,4 @@ django_event_logger.egg-info
 toxtests
 manage.py
 dist
+**/__pycache__
