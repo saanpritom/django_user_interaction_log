@@ -29,7 +29,7 @@ class ViewTestCases(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_example_function_view_response(self):
-        if ModuleConfigurations().default_allow_sensitive_test_case is True:
+        if ModuleConfigurations().default_allow_sensitive_test_case is False:
             request = self.factory.get(reverse('django_event_logger_function_example_view'))
             response = example_function_based_view(request)
             self.assertEqual(response.status_code, 200)

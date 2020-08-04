@@ -7,7 +7,7 @@ from .registrars import create_log_record
 
 class ExampleViewWithMixin(EventLoggerMixin, TemplateView):
     """This example is for the class based view users"""
-    template_name = 'example_templates/example_template.html'
+    template_name = 'django_event_logger/example_template.html'
     event_logger_log_detail_message = 'event_logger example class view test operation'
 
     def get_log_target_object(self, request, *args, **kwargs):
@@ -23,4 +23,4 @@ def example_function_based_view(request):
         target_object = get_user_model().objects.first()
     create_log_record(request=request, log_detail='event_logger example function view test operation',
                       log_target=target_object)
-    return render(request, 'example_templates/example_template.html')
+    return render(request, 'django_event_logger/example_template.html')
