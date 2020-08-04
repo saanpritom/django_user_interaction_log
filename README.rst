@@ -165,39 +165,39 @@ Here two things to notice that the 'event_logger_log_detail_message' and
    is None
 
 
-   Log Records List
-   ----------------
+Log Records List
+----------------
 
-   There are two views for the stored log records of this application. But
-   one cannot add, update or delete anything on these records through these
-   views. To add, delete or update a log record the user must have to use
-   the Django default Admin Panel. Where this app will be found on the name
-   of 'Event Logger'
+There are two views for the stored log records of this application. But
+one cannot add, update or delete anything on these records through these
+views. To add, delete or update a log record the user must have to use
+the Django default Admin Panel. Where this app will be found on the name
+of 'Event Logger'
 
-   1. The default list view can be checked from this URL
+1. The default list view can be checked from this URL
 
-      .. code:: python
+  .. code:: python
 
-         https://your-ip-or-domain/event_logger/
+     https://your-ip-or-domain/event_logger/
 
-      with ?format=table or ?format=file will show table and file formatted
-      lists of the logs. For a detail table format view the URL will be
-      https://your-ip-or-domain/event_logger/?format=table and for a file
-      format view the URL will be
-      https://your-ip-or-domain/event_logger/?format=file
+  with ?format=table or ?format=file will show table and file formatted
+  lists of the logs. For a detail table format view the URL will be
+  https://your-ip-or-domain/event_logger/?format=table and for a file
+  format view the URL will be
+  https://your-ip-or-domain/event_logger/?format=file
 
-   2. The default detail view can be checked from this URL
+2. The default detail view can be checked from this URL
 
-      .. code:: python
+  .. code:: python
 
-         https://your-ip-or-domain/event_logger/3/
+     https://your-ip-or-domain/event_logger/3/
 
-      Here 3 is the primary key for that particular log record
+  Here 3 is the primary key for that particular log record
 
-   Package Creator
-   ---------------
+Package Creator
+---------------
 
-   This package is created by Pritom Borogoria. The package is inspired by
-   `Django Activity Stream`_
+This package is created by Pritom Borogoria. The package is inspired by
+`Django Activity Stream`_
 
-   .. _Django Activity Stream: https://github.com/justquick/django-activity-stream
+.. _Django Activity Stream: https://github.com/justquick/django-activity-stream
