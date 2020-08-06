@@ -1,6 +1,9 @@
 Django Event Logger
 ===================
 
+.. image:: https://travis-ci.org/saanpritom/django_event_logger.svg?branch=dev
+    :target: https://travis-ci.org/saanpritom/django_event_logger
+
 Description
 -----------
 

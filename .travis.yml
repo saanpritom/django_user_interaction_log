@@ -37,5 +37,3 @@ install:
 # command to run tests
 script:
   - tox -e $TOXENV
-# containers
-sudo: false
