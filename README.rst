@@ -10,6 +10,14 @@ then it may keeps record of the event. Like 'ExampleUser has performed
 read operation on ExampleCar at /example/path/ 10 minutes ago'. This is
 a dummy log record.
 
+Compatibility
+-------------
+
+This package is Tox tested with Python version 3.6, 3.7 and 3.8 with Django
+version 2.0, 2.1, 2.2, 3.0, 3.1. However, this package is compatible with
+Python version > 3.0 and Django version > 2.0 but not compatible with
+Python 2.7 and Django version < 2.0
+
 Installation
 ------------
 
