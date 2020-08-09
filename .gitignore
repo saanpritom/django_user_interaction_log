@@ -8,3 +8,5 @@ dist
 site
 **/__pycache__
 db.sqlite3
+.pypirc
+build/*
