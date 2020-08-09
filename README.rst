@@ -60,7 +60,7 @@ After successful installation open Django's settings.py file and add
        'django_event_logger',
    ]
 
-Include the event loggers URLconf in your project urls.py like this::
+Include the event loggers URLconf in your project urls.py like this
 
 .. code:: python
 
