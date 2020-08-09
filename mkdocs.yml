@@ -1,0 +1,18 @@
+site_name: Django Event Logger
+site_url: http://127.0.0.1:8000/
+repo_url: https://github.com/saanpritom/django_event_logger.git
+repo_name: 'GitHub'
+site_description: Django Event Logger keeps the log record of any operation on
+                  a Django based application. Such as an user views a page on
+                  a Django application then it may keeps record of the event.
+                  Like 'ExampleUser has performed read operation on ExampleCar
+                  at /example/path/ 10 minutes ago'. This is a dummy log
+                  record.
+site_author: Pritom Borogoria
+copyright: Pritom Borogoria
+nav:
+    - Introduction: 'index.md'
+    - Documentation: 'detail.md'
+    - Issue Tracker: 'https://github.com/saanpritom/django_event_logger/issues'
+theme:
+    name: readthedocs
