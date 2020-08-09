@@ -4,6 +4,9 @@ Django Event Logger
 .. image:: https://travis-ci.org/saanpritom/django_event_logger.svg?branch=dev
     :target: https://travis-ci.org/saanpritom/django_event_logger
 
+.. image:: https://coveralls.io/repos/github/saanpritom/django_event_logger/badge.svg?branch=dev
+    :target: https://coveralls.io/github/saanpritom/django_event_logger?branch=dev
+
 Description
 -----------
 

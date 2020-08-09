@@ -1,6 +1,5 @@
 .env
 htmlcov
-.coverage
 .tox
 django_event_logger.egg-info
 toxtests
