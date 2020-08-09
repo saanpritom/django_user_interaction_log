@@ -13,6 +13,16 @@ then it may keeps record of the event. Like 'ExampleUser has performed
 read operation on ExampleCar at /example/path/ 10 minutes ago'. This is
 a dummy log record.
 
+Requirements
+------------
+
+This package only needs Django to run.
+
+Version
+-------
+
+Current stable version is 1.0
+
 Compatibility
 -------------
 
@@ -24,25 +34,24 @@ Python 2.7 and Django version < 2.0
 Installation
 ------------
 
-Please initialize git at an empty directory. Then add the repository
-address to your git remote origin (The master branch as it is the most
-tested version).
+This package can be installed in two ways. One is via the pypi package manager
+and other is directly from the Github.
 
-After downloading create a python virtual environment using virtualenv
-or anything you like. This package is tested using only Python3.
-However, Python2.7 testing is on the way. After creating the virtualenv
-activate it.
-
-Then run
+For pypi installation please use the following command
 
 .. code:: python
 
-   pip install -r requirements.txt
+    pip install django_event_logger
 
-to download and install all the required packages.
+And for directly downloading from the Github repository use the following
+commands
 
-After successful pip installation open your settings.py file and add
-'event_logger', on your INSTALLED_APPS list.
+.. code:: python
+
+    git clone https://github.com/saanpritom/django_event_logger.git
+
+After successful installation open Django's settings.py file and add
+'django_event_logger', on your INSTALLED_APPS list.
 
 .. code:: python
 
@@ -57,7 +66,8 @@ Include the event loggers URLconf in your project urls.py like this::
 
    path('django_event_logger/', include('django_event_logger.urls')),
 
-Now run the app migration for creating the databases
+Here you can put whatever you like on the path. Now run the app migration for
+creating the database migrations
 
 .. code:: python
 
