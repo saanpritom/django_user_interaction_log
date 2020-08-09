@@ -7,6 +7,10 @@ Django Event Logger
 .. image:: https://coveralls.io/repos/github/saanpritom/django_event_logger/badge.svg?branch=dev
     :target: https://coveralls.io/github/saanpritom/django_event_logger?branch=dev
 
+.. image:: https://readthedocs.org/projects/django-event-logger/badge/?version=latest
+    :target: https://django-event-logger.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
 Description
 -----------
 

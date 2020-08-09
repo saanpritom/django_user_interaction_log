@@ -5,6 +5,8 @@ Django Event Logger
 
 [![Coverage](https://coveralls.io/repos/github/saanpritom/django_event_logger/badge.svg?branch=dev)](https://coveralls.io/github/saanpritom/django_event_logger?branch=dev)
 
+[![Documentation Status](https://readthedocs.org/projects/django-event-logger/badge/?version=latest)](https://django-event-logger.readthedocs.io/en/latest/?badge=latest)
+
 
 Description
 -----------
