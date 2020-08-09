@@ -2,6 +2,7 @@ site_name: Django Event Logger
 site_url: http://127.0.0.1:8000/
 repo_url: https://github.com/saanpritom/django_event_logger.git
 repo_name: 'GitHub'
+edit_uri: https://github.com/saanpritom/django_event_logger/edit/master/docs
 site_description: Django Event Logger keeps the log record of any operation on
                   a Django based application. Such as an user views a page on
                   a Django application then it may keeps record of the event.
