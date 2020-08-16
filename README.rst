@@ -4,8 +4,8 @@ Django User Interaction Log
 .. image:: https://travis-ci.org/saanpritom/django_user_interaction_log.svg?branch=dev
     :target: https://travis-ci.org/saanpritom/django_user_interaction_log
 
-.. image:: https://coveralls.io/repos/github/saanpritom/django_user_interaction_log/badge.svg?branch=dev
-    :target: https://coveralls.io/github/saanpritom/django_user_interaction_log?branch=dev
+.. image:: https://coveralls.io/repos/github/saanpritom/django_user_interaction_log/badge.svg
+    :target: https://coveralls.io/github/saanpritom/django_user_interaction_log
 
 .. image:: https://readthedocs.org/projects/django-event-logger/badge/?version=latest
     :target: https://django-event-logger.readthedocs.io/en/latest/?badge=latest

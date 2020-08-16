@@ -3,7 +3,7 @@ Django User Interaction Log
 
 [![Build Status](https://travis-ci.org/saanpritom/django_user_interaction_log.svg?branch=master)](https://travis-ci.org/saanpritom/django_user_interaction_log)
 
-[![Coverage](https://coveralls.io/repos/github/saanpritom/django_user_interaction_log/badge.svg?branch=dev)](https://coveralls.io/github/saanpritom/django_user_interaction_log?branch=dev)
+[![Coverage Status](https://coveralls.io/repos/github/saanpritom/django_user_interaction_log/badge.svg)](https://coveralls.io/github/saanpritom/django_user_interaction_log)
 
 [![Documentation Status](https://readthedocs.org/projects/django-event-logger/badge/?version=latest)](https://django-event-logger.readthedocs.io/en/latest/?badge=latest)
 
