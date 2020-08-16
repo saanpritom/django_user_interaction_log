@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.timezone import now
 from django.urls import reverse
 from django.db import models
+from .apps import DjangoUserInteractionLogConfig
 from .configs import ModuleConfigurations
 
 
@@ -47,7 +48,7 @@ class LogRecordsModel(models.Model):
         return str(self.id) + '. ' + self.get_user_representer() + ' performed ' + str(self.log_detail) + ' on ' + str(self.log_target) + ' at ' + str(self.event_path) + ' ' + str(self.get_timesince()) + ' ago'
 
     def get_absolute_url(self):
-        return reverse('django_event_logger_detail_view', args=[self.id])
+        return reverse(str(DjangoUserInteractionLogConfig.name) + '_detail_view', args=[self.id])
 
     def get_user_object_absolute_url(self):
         """Return the absolute url of the User object. If not found then return #"""
@@ -98,7 +99,8 @@ class LogRecordsModel(models.Model):
     def get_user_representer(self, test_user_model_field=None):
         """This returns a string representation of the user instance. By default it calls the __str__ method
            of the user class. But if you want to change it then please add 'user_representer_field' on
-           'EVENT_LOGGER_SETTINGS' at your settings file. If the user is Anonymous then it simply return Anonymous"""
+           'DJANGO_USER_INTERACTION_LOG_SETTINGS' at your settings file.
+           If the user is Anonymous then it simply return Anonymous"""
         if self.log_user is None:
             return 'Anonymous'
         else:

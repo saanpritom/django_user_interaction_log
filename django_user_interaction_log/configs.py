@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 class ModuleConfigurations:
     """This file is responsible for the environment and configuration of the module. Which funtion allowed or
        not allowed is determined here. This configs methods are dependent on the settings.py file.
-       The EVENT_LOGGER_SETTINGS keyword arguments on the settings.py file values are used here. But if the
-       keyword argument is not on the settings.py file then it will use the default values"""
+       The DJANGO_USER_INTERACTION_LOG_SETTINGS keyword arguments on the settings.py file values are used here.
+       But if the keyword argument is not on the settings.py file then it will use the default values"""
 
     default_allow_sensitive_test_case = False   # check self.allow_sensitive_test_cases() method
     default_user_representer_field = '__str__'  # check self.get_default_user_representer_field() method
@@ -20,8 +20,9 @@ class ModuleConfigurations:
             return test_settings_object
 
     def is_default_settings_modified(self, settings_object):
-        """This function return True if EVENT_LOGGER_SETTINGS is on the settings file otherwise return False"""
-        if hasattr(settings_object, 'EVENT_LOGGER_SETTINGS'):
+        """This function return True if DJANGO_USER_INTERACTION_LOG_SETTINGS
+           is on the settings file otherwise return False"""
+        if hasattr(settings_object, 'DJANGO_USER_INTERACTION_LOG_SETTINGS'):
             return True
         return False
 
@@ -40,10 +41,10 @@ class ModuleConfigurations:
         config_settings_object = self.get_settings_object(on_test, test_settings_object)
 
         if self.is_default_settings_modified(config_settings_object):
-            if self.is_key_in_dict(config_settings_object.EVENT_LOGGER_SETTINGS, 'sensitive_test_cases'):
-                if config_settings_object.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is True:
+            if self.is_key_in_dict(config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS, 'sensitive_test_cases'):
+                if config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS['sensitive_test_cases'] is True:
                     return True
-                elif config_settings_object.EVENT_LOGGER_SETTINGS['sensitive_test_cases'] is False:
+                elif config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS['sensitive_test_cases'] is False:
                     return False
                 else:
                     raise ValidationError('sensitive_test_cases value is expected a Boolean value')
@@ -58,9 +59,9 @@ class ModuleConfigurations:
         config_settings_object = self.get_settings_object(on_test, test_settings_object)
 
         if self.is_default_settings_modified(config_settings_object):
-            if self.is_key_in_dict(config_settings_object.EVENT_LOGGER_SETTINGS, 'user_representer_field'):
-                if isinstance(config_settings_object.EVENT_LOGGER_SETTINGS['user_representer_field'], str):
-                    return config_settings_object.EVENT_LOGGER_SETTINGS['user_representer_field']
+            if self.is_key_in_dict(config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS, 'user_representer_field'):
+                if isinstance(config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS['user_representer_field'], str):
+                    return config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS['user_representer_field']
                 else:
                     raise ValidationError('user_representer_field value must be a string')
             else:
@@ -70,13 +71,13 @@ class ModuleConfigurations:
 
     def get_log_records_list_pagination(self, on_test=False, test_settings_object=None):
         """This set the pagination number of the log list views. If you want to change it then please change
-            list_paginated_by keyword on EVENT_LOGGER_SETTINGS"""
+            list_paginated_by keyword on DJANGO_USER_INTERACTION_LOG_SETTINGS"""
         config_settings_object = self.get_settings_object(on_test, test_settings_object)
 
         if self.is_default_settings_modified(config_settings_object):
-            if self.is_key_in_dict(config_settings_object.EVENT_LOGGER_SETTINGS, 'list_paginated_by'):
-                if isinstance(config_settings_object.EVENT_LOGGER_SETTINGS['list_paginated_by'], int):
-                    return config_settings_object.EVENT_LOGGER_SETTINGS['list_paginated_by']
+            if self.is_key_in_dict(config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS, 'list_paginated_by'):
+                if isinstance(config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS['list_paginated_by'], int):
+                    return config_settings_object.DJANGO_USER_INTERACTION_LOG_SETTINGS['list_paginated_by']
                 else:
                     raise ValidationError('list_paginated_by value must be an Integer')
             else:

@@ -1,11 +1,11 @@
-Django Event Logger
-===================
+Django User Interaction Log
+===========================
 
-.. image:: https://travis-ci.org/saanpritom/django_event_logger.svg?branch=dev
-    :target: https://travis-ci.org/saanpritom/django_event_logger
+.. image:: https://travis-ci.org/saanpritom/django_user_interaction_log.svg?branch=dev
+    :target: https://travis-ci.org/saanpritom/django_user_interaction_log
 
-.. image:: https://coveralls.io/repos/github/saanpritom/django_event_logger/badge.svg?branch=dev
-    :target: https://coveralls.io/github/saanpritom/django_event_logger?branch=dev
+.. image:: https://coveralls.io/repos/github/saanpritom/django_user_interaction_log/badge.svg?branch=dev
+    :target: https://coveralls.io/github/saanpritom/django_user_interaction_log?branch=dev
 
 .. image:: https://readthedocs.org/projects/django-event-logger/badge/?version=latest
     :target: https://django-event-logger.readthedocs.io/en/latest/?badge=latest
@@ -14,7 +14,7 @@ Django Event Logger
 Description
 -----------
 
-Django Event Logger keeps the log record of any operation on a Django
+Django User Interaction Log keeps the log record of any operation on a Django
 based application. Such as an user views a page on a Django application
 then it may keeps record of the event. Like 'ExampleUser has performed
 read operation on ExampleCar at /example/path/ 10 minutes ago'. This is
@@ -48,30 +48,30 @@ For pypi installation please use the following command
 
 .. code:: python
 
-    pip install django_event_logger
+    pip install django_user_interaction_log
 
 And for directly downloading from the Github repository use the following
 commands
 
 .. code:: python
 
-    git clone https://github.com/saanpritom/django_event_logger.git
+    git clone https://github.com/saanpritom/django_user_interaction_log.git
 
 After successful installation open Django's settings.py file and add
-'django_event_logger', on your INSTALLED_APPS list.
+'django_user_interaction_log', on your INSTALLED_APPS list.
 
 .. code:: python
 
    INSTALLED_APPS = [
        ...
-       'django_event_logger',
+       'django_user_interaction_log',
    ]
 
 Include the event loggers URLconf in your project urls.py like this
 
 .. code:: python
 
-   path('django_event_logger/', include('django_event_logger.urls')),
+   path('django_user_interaction_log/', include('django_user_interaction_log.urls')),
 
 Here you can put whatever you like on the path. Now run the app migration for
 creating the database migrations
@@ -87,7 +87,7 @@ then it will use the default values for the keys.
 
 .. code:: python
 
-   EVENT_LOGGER_SETTINGS = {
+   DJANGO_USER_INTERACTION_LOG_SETTINGS = {
        'sensitive_test_cases': True,
        'user_representer_field': '__str__',
        'list_paginated_by': 100,
@@ -125,7 +125,7 @@ on your views.py file import the following module
 
 .. code:: python
 
-   from event_logger.registrars import create_log_record
+   from django_user_interaction_log.registrars import create_log_record
 
 and on your function based view just add this method as below
 
@@ -136,7 +136,7 @@ and on your function based view just add this method as below
        target_object = None
        if get_user_model().objects.filter().exists():
            target_object = get_user_model().objects.first()
-       create_log_record(request=request, log_detail='event_logger example function view test operation',
+       create_log_record(request=request, log_detail='django_user_interaction_log example function view test operation',
                          log_target=target_object)
        return render(request, 'example_templates/example_template.html')
 
@@ -163,26 +163,26 @@ on the views.py file import the following Mixin
 
 .. code:: python
 
-   from event_logger.mixins import EventLoggerMixin
+   from django_user_interaction_log.mixins import DjangoUserInteractionLogMixin
 
 and on any class based views use this mixin as follow:
 
 .. code:: python
 
-   class ExampleViewWithMixin(EventLoggerMixin, TemplateView):
+   class ExampleViewWithMixin(DjangoUserInteractionLogMixin, TemplateView):
        """This example is for the class based view users"""
        template_name = 'example_templates/example_template.html'
-       event_logger_log_detail_message = 'event_logger example class view test operation'
+       django_user_interaction_log_log_detail_message = 'django_user_interaction_log example class view test operation'
 
        def get_log_target_object(self, request, *args, **kwargs):
            if get_user_model().objects.filter().exists():
                return get_user_model().objects.first()
            return None
 
-Here two things to notice that the 'event_logger_log_detail_message' and
+Here two things to notice that the 'django_user_interaction_log_log_detail_message' and
 'get_log_target_object()'
 
-1. 'event_logger_log_detail_message' holds the action message performed
+1. 'django_user_interaction_log_log_detail_message' holds the action message performed
    by the user on this view. If not assign then it will use the default
    None
 2. 'get_log_target_object()' this method returns the instance of the
@@ -206,19 +206,19 @@ of 'Event Logger'
 
   .. code:: python
 
-     https://your-ip-or-domain/event_logger/
+     https://your-ip-or-domain/django_user_interaction_log/
 
   with ?format=table or ?format=file will show table and file formatted
   lists of the logs. For a detail table format view the URL will be
-  https://your-ip-or-domain/event_logger/?format=table and for a file
+  https://your-ip-or-domain/django_user_interaction_log/?format=table and for a file
   format view the URL will be
-  https://your-ip-or-domain/event_logger/?format=file
+  https://your-ip-or-domain/django_user_interaction_log/?format=file
 
 2. The default detail view can be checked from this URL
 
   .. code:: python
 
-     https://your-ip-or-domain/event_logger/3/
+     https://your-ip-or-domain/django_user_interaction_log/3/
 
   Here 3 is the primary key for that particular log record
 

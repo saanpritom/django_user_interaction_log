@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load model_objects_info %}
 
-{% block event_logger_contents %}
+{% block django_user_interaction_log_contents %}
   <div class="log_records_detail">
     <h2>{{ object|model_object_meta_data:'verbose_name' }} Detail</h2>
-    <table class="event_logger_record_table">
+    <table class="django_user_interaction_log_record_table">
       <thead>
         <tr>
           <th>Sl. No.</th>

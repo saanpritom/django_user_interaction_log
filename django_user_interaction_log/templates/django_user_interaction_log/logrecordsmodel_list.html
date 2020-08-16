@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% load model_objects_info %}
 
-{% block event_logger_contents %}
+{% block django_user_interaction_log_contents %}
     <div class="log_records_list">
       {% if object_list %}
 
         <h2>{{ object_list.0|model_object_meta_data:'verbose_name_plural' }}</h2>
         {% if request.GET.format == 'table' %}
 
-          <table class="event_logger_records_table">
+          <table class="django_user_interaction_log_records_table">
             <thead>
               <tr>
                 <th>Sl.</th>
@@ -48,7 +48,7 @@
 
       {% else %}
 
-        <p class="django-event-logger-default-message">No Results Found</p>
+        <p class="django_user_interaction_log_default_message">No Results Found</p>
 
       {% endif %}
 
@@ -56,7 +56,7 @@
 
     {% if object_list %}
 
-        <div class="log_records_pagination">
+        <div class="django_user_interaction_log_records_pagination">
           <div class="pagination">
         <span class="step-links">
             {% if page_obj.has_previous %}

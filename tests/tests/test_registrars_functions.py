@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.http import HttpRequest
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django_event_logger.registrars import create_log_record
+from django_user_interaction_log.registrars import create_log_record
 
 
 class RegistrarsTestCase(TestCase):

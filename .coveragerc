@@ -6,7 +6,7 @@ omit =
     docs/*
     tests/*
     .tox/*
-    django_event_logger.egg-info//*
+    django_user_interaction_log.egg-info//*
 
 [report]
 # Regexes for lines to exclude from consideration

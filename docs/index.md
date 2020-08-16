@@ -1,9 +1,9 @@
-Django Event Logger
-===================
+Django User Interaction Log
+===========================
 
-[![Build Status](https://travis-ci.org/saanpritom/django_event_logger.svg?branch=master)](https://travis-ci.org/saanpritom/django_event_logger)
+[![Build Status](https://travis-ci.org/saanpritom/django_user_interaction_log.svg?branch=master)](https://travis-ci.org/saanpritom/django_user_interaction_log)
 
-[![Coverage](https://coveralls.io/repos/github/saanpritom/django_event_logger/badge.svg?branch=dev)](https://coveralls.io/github/saanpritom/django_event_logger?branch=dev)
+[![Coverage](https://coveralls.io/repos/github/saanpritom/django_user_interaction_log/badge.svg?branch=dev)](https://coveralls.io/github/saanpritom/django_user_interaction_log?branch=dev)
 
 [![Documentation Status](https://readthedocs.org/projects/django-event-logger/badge/?version=latest)](https://django-event-logger.readthedocs.io/en/latest/?badge=latest)
 
@@ -11,7 +11,7 @@ Django Event Logger
 Description
 -----------
 
-Django Event Logger keeps the log record of any operation on a Django
+Django User Interaction Log keeps the log record of any operation on a Django
 based application. Such as an user views a page on a Django application
 then it may keeps record of the event. Like 'ExampleUser has performed
 read operation on ExampleCar at /example/path/ 10 minutes ago'. This is
@@ -40,4 +40,3 @@ Package Creator
 
 This package is created by Pritom Borogoria. The package is inspired by
 [Django Activity Stream]: https://github.com/justquick/django-activity-stream
-  

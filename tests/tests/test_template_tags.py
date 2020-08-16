@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django_event_logger.models import LogRecordsModel
-from django_event_logger.templatetags.model_objects_info import (model_object_meta_data, model_object_fields_list, is_field_printable,
-                                                                 model_field_value_object)
+from django_user_interaction_log.models import LogRecordsModel
+from django_user_interaction_log.templatetags.model_objects_info import (model_object_meta_data, model_object_fields_list, is_field_printable,
+                                                                         model_field_value_object)
 
 
 class TemplateTagsTestCase(TestCase):

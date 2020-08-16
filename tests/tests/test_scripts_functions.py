@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
-from django_event_logger.scripts import (get_clean_request_object, get_request_event_path, get_request_user)
+from django_user_interaction_log.scripts import (get_clean_request_object, get_request_event_path, get_request_user)
 
 
 class ScriptsFunctionsTestCase(TestCase):

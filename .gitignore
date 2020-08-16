@@ -1,7 +1,7 @@
 .env
 htmlcov
 .tox
-django_event_logger.egg-info
+django_user_interaction_log.egg-info
 toxtests
 manage.py
 dist

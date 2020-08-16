@@ -2,9 +2,9 @@ from django.test import RequestFactory, TestCase
 from django.http import HttpRequest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from django_event_logger.views import LogRecordsListView
-from django_event_logger.registrars import create_log_record
-from django_event_logger.examples import ExampleViewWithMixin, example_function_based_view
+from django_user_interaction_log.views import LogRecordsListView
+from django_user_interaction_log.registrars import create_log_record
+from django_user_interaction_log.examples import ExampleViewWithMixin, example_function_based_view
 
 
 class ViewTestCases(TestCase):
@@ -18,16 +18,16 @@ class ViewTestCases(TestCase):
         self.log_record = create_log_record(request=request, log_detail='test log view', log_target=self.target_user)
 
     def test_list_view_response(self):
-        request = self.factory.get(reverse('django_event_logger_list_view'))
+        request = self.factory.get(reverse('django_user_interaction_log_list_view'))
         response = LogRecordsListView.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
     def test_example_mixin_view_response(self):
-        request = self.factory.get(reverse('django_event_logger_mixin_example_view'))
+        request = self.factory.get(reverse('django_user_interaction_log_mixin_example_view'))
         response = ExampleViewWithMixin.as_view()(request)
         self.assertEqual(response.status_code, 200)
 
     def test_example_function_view_response(self):
-        request = self.factory.get(reverse('django_event_logger_function_example_view'))
+        request = self.factory.get(reverse('django_user_interaction_log_function_example_view'))
         response = example_function_based_view(request)
         self.assertEqual(response.status_code, 200)

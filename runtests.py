@@ -10,9 +10,9 @@ from django.core.management import execute_from_command_line
 if __name__ == "__main__":
     os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.test_settings'
     django.setup()
-    args = sys.argv + ["makemigrations", "django_event_logger"]
+    args = sys.argv + ["makemigrations", "django_user_interaction_log"]
     execute_from_command_line(args)
-    args = sys.argv + ["migrate", "django_event_logger"]
+    args = sys.argv + ["migrate", "django_user_interaction_log"]
     execute_from_command_line(args)
     TestRunner = get_runner(settings)
     test_runner = TestRunner()

@@ -1,5 +1,5 @@
-Django Event Logger
-===================
+Django User Interaction Log
+===========================
 
 
 Installation
@@ -11,14 +11,14 @@ manager and other is directly from the Github.
 For pypi installation please use the following command
 
 ```
-    pip install django_event_logger
+    pip install django_user_interaction_log
 ```
 
 And for directly downloading from the Github repository use the
 following commands
 
 ```
-    git clone https://github.com/saanpritom/django_event_logger.git
+    git clone https://github.com/saanpritom/django_user_interaction_log.git
 ```
 
 After successful installation open Django's settings.py file and add
@@ -27,14 +27,14 @@ After successful installation open Django's settings.py file and add
 ```
     INSTALLED_APPS = [
         ...
-        'django_event_logger',
+        'django_user_interaction_log',
     ]
 ```
 
 Include the event loggers URLconf in your project urls.py like this
 
 ```
-    path('django_event_logger/', include('django_event_logger.urls')),
+    path('django_user_interaction_log/', include('django_user_interaction_log.urls')),
 ```
 
 Here you can put whatever you like on the path. Now run the app
@@ -50,7 +50,7 @@ file. However, if you do not put the dictionary on the settings.py file
 then it will use the default values for the keys.
 
 ```
-    EVENT_LOGGER_SETTINGS = {
+    DJANGO_USER_INTERACTION_LOG_SETTINGS = {
         'sensitive_test_cases': True,
         'user_representer_field': '__str__',
         'list_paginated_by': 100,
@@ -86,7 +86,7 @@ Function Based Views
 on your views.py file import the following module
 
 ```
-    from event_logger.registrars import create_log_record
+    from django_user_interaction_log.registrars import create_log_record
 ```
 
 and on your function based view just add this method as below
@@ -97,7 +97,7 @@ and on your function based view just add this method as below
         target_object = None
         if get_user_model().objects.filter().exists():
             target_object = get_user_model().objects.first()
-        create_log_record(request=request, log_detail='event_logger example function view test operation',
+        create_log_record(request=request, log_detail='django_user_interaction_log example function view test operation',
                           log_target=target_object)
         return render(request, 'example_templates/example_template.html')
 ```
@@ -122,16 +122,16 @@ Class Based Views
 on the views.py file import the following Mixin
 
 ```
-    from event_logger.mixins import EventLoggerMixin
+    from django_user_interaction_log.mixins import DjangoUserInteractionLogMixin
 ```
 
 and on any class based views use this mixin as follow:
 
 ```
-    class ExampleViewWithMixin(EventLoggerMixin, TemplateView):
+    class ExampleViewWithMixin(DjangoUserInteractionLogMixin, TemplateView):
         """This example is for the class based view users"""
         template_name = 'example_templates/example_template.html'
-        event_logger_log_detail_message = 'event_logger example class view test operation'
+        django_user_interaction_log_log_detail_message = 'django_user_interaction_log example class view test operation'
 
         def get_log_target_object(self, request, *args, **kwargs):
             if get_user_model().objects.filter().exists():
@@ -164,17 +164,17 @@ of 'Event Logger'
 1.  The default list view can be checked from this URL
 
     ```
-     https://your-ip-or-domain/event_logger/
+     https://your-ip-or-domain/django_user_interaction_log/
     ```
 
     with ```?format=table``` or ```?format=file``` will show table and file formatted
     lists of the logs. For a detail table format view the URL will be
-    <https://your-ip-or-domain/event_logger/?format=table> and for a file
+    <https://your-ip-or-domain/django_user_interaction_log/?format=table> and for a file
     format view the URL will be
-    <https://your-ip-or-domain/event_logger/?format=file>
+    <https://your-ip-or-domain/django_user_interaction_log/?format=file>
 
 2.  The default detail view can be checked from this URL
     ```
-      https://your-ip-or-domain/event_logger/3/
+      https://your-ip-or-domain/django_user_interaction_log/3/
     ```
     Here 3 is the primary key for that particular log record
