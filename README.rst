@@ -172,7 +172,7 @@ and on any class based views use this mixin as follow:
    class ExampleViewWithMixin(DjangoUserInteractionLogMixin, TemplateView):
        """This example is for the class based view users"""
        template_name = 'example_templates/example_template.html'
-       django_user_interaction_log_log_detail_message = 'django_user_interaction_log example class view test operation'
+       django_user_interaction_log_detail_message = 'django_user_interaction_log example class view test operation'
 
        def get_log_target_object(self, request, *args, **kwargs):
            if get_user_model().objects.filter().exists():

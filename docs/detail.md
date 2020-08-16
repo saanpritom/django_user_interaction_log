@@ -97,8 +97,7 @@ and on your function based view just add this method as below
         target_object = None
         if get_user_model().objects.filter().exists():
             target_object = get_user_model().objects.first()
-        create_log_record(request=request, log_detail='django_user_interaction_log example function view test operation',
-                          log_target=target_object)
+        create_log_record(request=request, log_detail='django_user_interaction_log example function view test operation', log_target=target_object)
         return render(request, 'example_templates/example_template.html')
 ```
 
@@ -131,7 +130,7 @@ and on any class based views use this mixin as follow:
     class ExampleViewWithMixin(DjangoUserInteractionLogMixin, TemplateView):
         """This example is for the class based view users"""
         template_name = 'example_templates/example_template.html'
-        django_user_interaction_log_log_detail_message = 'django_user_interaction_log example class view test operation'
+        django_user_interaction_log_detail_message = 'django_user_interaction_log example class view test operation'
 
         def get_log_target_object(self, request, *args, **kwargs):
             if get_user_model().objects.filter().exists():
