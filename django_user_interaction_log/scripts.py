@@ -5,10 +5,22 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
 
 
+def check_if_drf_request(request):
+    """Check request object DRF Request validity."""
+    try:
+        from rest_framework.request import Request
+        if isinstance(request, Request):
+            return True
+        else:
+            return False
+    except ImportError:
+        return False
+
+
 def get_clean_request_object(request):
     """Receives HttpRequest object and check if it is really belongs to HttpRequest class. If not then
        raise ValidationError"""
-    if isinstance(request, HttpRequest):
+    if isinstance(request, HttpRequest) or check_if_drf_request(request):
         return request
     else:
         raise ValidationError('request must be a Django HttpRequest object')

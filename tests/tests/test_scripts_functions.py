@@ -3,7 +3,8 @@ from django.http import HttpRequest
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
-from django_user_interaction_log.scripts import (get_clean_request_object, get_request_event_path, get_request_user)
+from rest_framework.request import Request
+from django_user_interaction_log.scripts import (check_if_drf_request, get_clean_request_object, get_request_event_path, get_request_user)
 
 
 class ScriptsFunctionsTestCase(TestCase):
@@ -31,7 +32,15 @@ class ScriptsFunctionsTestCase(TestCase):
         fake_user_object = type('test', (object,), {})()
         setattr(request, 'user', fake_user_object)
         get_request_dict['request_object_with_fake_user_object'] = request
+        request = HttpRequest()
+        drf_request = Request(request)
+        fake_user_object = type('test', (object,), {})()
+        setattr(drf_request, 'user', fake_user_object)
+        get_request_dict['drf_request_object_with_fake_user_object'] = drf_request
         self.get_request_dict = get_request_dict
+
+    def test_check_if_drf_request(self):
+        self.assertEqual(check_if_drf_request(self.get_request_dict['drf_request_object_with_fake_user_object']), True)
 
     def test_get_clean_request_object(self):
         self.assertEqual(get_clean_request_object(self.get_request_dict['empty_request_object']), self.get_request_dict['empty_request_object'])
